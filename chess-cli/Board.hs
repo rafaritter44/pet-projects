@@ -16,3 +16,7 @@ instance Show Piece where
   show (Piece Black Bishop) = "♝"
   show (Piece Black Knight) = "♞"
   show (Piece Black Pawn)   = "♟"
+
+instance Show Square where
+  show Empty        = "."
+  show (Occupied p) = show p
