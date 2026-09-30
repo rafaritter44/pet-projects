@@ -1,7 +1,13 @@
+module Board where
+
+import Data.Matrix
+
 data Color = White | Black
 data PieceType = Pawn | Knight | Bishop | Rook | Queen | King
 data Piece = Piece Color PieceType
 data Square = Empty | Occupied Piece
+
+type Board = Matrix Square
 
 instance Show Piece where
   show (Piece White King)   = "♔"
