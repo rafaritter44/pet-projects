@@ -26,3 +26,16 @@ instance Show Piece where
 instance Show Square where
   show Empty        = "."
   show (Occupied p) = show p
+
+initialBoard :: Board
+initialBoard = fromList 8 8 squares
+  where squares =
+          pieces Black
+          ++ pawns Black
+          ++ replicate 32 Empty
+          ++ pawns White
+          ++ pieces White
+        pieces color =
+          map (Occupied . Piece color) [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+        pawns color =
+          replicate 8 $ Occupied $ Piece color Pawn
