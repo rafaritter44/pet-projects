@@ -51,3 +51,6 @@ piecePositions _ _ = empty
 
 legalMovesFrom :: Board -> Position -> Set Move
 legalMovesFrom _ _ = empty
+
+isInCheck :: Board -> Color -> Bool
+isInCheck _ _ = False
