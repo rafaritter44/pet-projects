@@ -8,6 +8,8 @@ data Piece = Piece Color PieceType
 data Square = Empty | Occupied Piece
 
 type Board = Matrix Square
+type Position = (Int, Int)
+type Move = (Position, Position)
 
 instance Show Piece where
   show (Piece White King)   = "♔"
