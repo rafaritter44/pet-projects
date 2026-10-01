@@ -53,5 +53,14 @@ piecePositions _ _ = S.empty
 attackedPositions :: Board -> Color -> S.Set Position
 attackedPositions _ _ = S.empty
 
-isInCheck :: Board -> Color -> Bool
-isInCheck _ _ = False
+attackedPositionsFrom :: Board -> Position -> S.Set Position
+attackedPositionsFrom _ _ = S.empty
+
+reachablePositionsFrom :: Board -> Position -> S.Set Position
+reachablePositionsFrom _ _ = S.empty
+
+inCheck :: Board -> Color -> Bool
+inCheck _ _ = False
+
+nextBoard :: Board -> Move -> Board
+nextBoard _ _ = initialBoard
