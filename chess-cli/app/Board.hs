@@ -5,6 +5,7 @@ import qualified Data.Map as M
 import qualified Data.Set as S
 
 data Color = White | Black
+  deriving (Eq)
 data PieceType = Pawn | Knight | Bishop | Rook | Queen | King
 data Piece = Piece Color PieceType
 data Square = Empty | Occupied Piece
@@ -48,7 +49,14 @@ nextLegalBoards :: Board -> Color -> M.Map Move Board
 nextLegalBoards _ _ = M.empty
 
 piecePositions :: Board -> Color -> S.Set Position
-piecePositions _ _ = S.empty
+piecePositions board color =
+  S.fromList
+  [ (row, col)
+  | row <- [1 .. nrows board]
+  , col <- [1 .. ncols board]
+  , Occupied (Piece pieceColor _) <- [getElem row col board]
+  , pieceColor == color
+  ]
 
 attackedPositions :: Board -> Color -> S.Set Position
 attackedPositions _ _ = S.empty
