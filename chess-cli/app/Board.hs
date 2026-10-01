@@ -1,7 +1,8 @@
 module Board where
 
 import Data.Matrix
-import Data.Set (Set, empty)
+import qualified Data.Map as M
+import qualified Data.Set as S
 
 data Color = White | Black
 data PieceType = Pawn | Knight | Bishop | Rook | Queen | King
@@ -43,14 +44,14 @@ initialBoard = fromList 8 8 squares
         pawns color =
           replicate 8 $ Occupied $ Piece color Pawn
 
-legalMoves :: Board -> Color -> Set Move
-legalMoves _ _ = empty
+nextLegalBoards :: Board -> Color -> M.Map Move Board
+nextLegalBoards _ _ = M.empty
 
-piecePositions :: Board -> Color -> Set Position
-piecePositions _ _ = empty
+piecePositions :: Board -> Color -> S.Set Position
+piecePositions _ _ = S.empty
 
-legalMovesFrom :: Board -> Position -> Set Move
-legalMovesFrom _ _ = empty
+attackedPositions :: Board -> Color -> S.Set Position
+attackedPositions _ _ = S.empty
 
 isInCheck :: Board -> Color -> Bool
 isInCheck _ _ = False
