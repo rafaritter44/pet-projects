@@ -45,3 +45,6 @@ initialBoard = fromList 8 8 squares
 
 legalMoves :: Board -> Color -> Set Move
 legalMoves _ _ = empty
+
+piecePositions :: Board -> Color -> Set Position
+piecePositions _ _ = empty
