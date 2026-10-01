@@ -48,3 +48,6 @@ legalMoves _ _ = empty
 
 piecePositions :: Board -> Color -> Set Position
 piecePositions _ _ = empty
+
+legalMovesFrom :: Board -> Position -> Set Move
+legalMovesFrom _ _ = empty
