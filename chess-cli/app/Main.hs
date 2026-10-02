@@ -10,3 +10,4 @@ main = do
   let pieces color = map (initialBoard !) (S.toList $ piecePositions initialBoard color)
   print $ pieces Black
   print $ pieces White
+  print $ nextBoard initialBoard ((7, 5), (5, 5))

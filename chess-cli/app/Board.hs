@@ -71,4 +71,6 @@ inCheck :: Board -> Color -> Bool
 inCheck _ _ = False
 
 nextBoard :: Board -> Move -> Board
-nextBoard _ _ = initialBoard
+nextBoard board (from, to) =
+  setElem Empty from $
+  setElem (board ! from) to board
