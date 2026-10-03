@@ -32,8 +32,8 @@ instance Show Square where
   show Empty        = "."
   show (Occupied p) = show p
 
-printBoard :: Color -> Board -> IO ()
-printBoard _ = print
+boardString :: Color -> Board -> String
+boardString _ = show
 
 initialBoard :: Board
 initialBoard = fromList 8 8 squares
