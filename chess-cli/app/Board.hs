@@ -33,16 +33,33 @@ instance Show Square where
   show (Occupied p) = show p
 
 boardString :: Color -> Board -> String
-boardString _ = show
+boardString White board =
+  unlines $
+  "  A B C D E F G H" :
+  [ show row ++ " "
+  ++ unwords [show (board ! (row, col)) | col <- [1..8]]
+  ++ " " ++ show row
+  | row <- [8,7..1]
+  ]
+  ++ ["  A B C D E F G H"]
+boardString Black board =
+  unlines $
+  "  H G F E D C B A" :
+  [ show row ++ " "
+  ++ unwords [show (board ! (row, col)) | col <- [8,7..1]]
+  ++ " " ++ show row
+  | row <- [1..8]
+  ]
+  ++ ["  H G F E D C B A"]
 
 initialBoard :: Board
 initialBoard = fromList 8 8 squares
   where squares =
-          pieces Black
-          ++ pawns Black
-          ++ replicate 32 Empty
+          pieces White
           ++ pawns White
-          ++ pieces White
+          ++ replicate 32 Empty
+          ++ pawns Black
+          ++ pieces Black
         pieces color =
           map (Occupied . Piece color) [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
         pawns color =
