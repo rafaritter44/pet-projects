@@ -1,6 +1,7 @@
 module Main where
 
 import Board
+import Move
 import Data.Matrix
 import Data.Maybe
 import qualified Data.Set as S
