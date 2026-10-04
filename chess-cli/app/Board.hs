@@ -11,7 +11,7 @@ data PieceType = Pawn | Knight | Bishop | Rook | Queen | King
 data Piece = Piece Color PieceType
 data Square = Empty | Occupied Piece
 
-type Board = Matrix Square
+newtype Board = Board (Matrix Square)
 
 instance Show Piece where
   show (Piece White King)   = "♔"
@@ -31,28 +31,18 @@ instance Show Square where
   show Empty        = "."
   show (Occupied p) = show p
 
-boardString :: Color -> Board -> String
-boardString White board =
-  unlines $
-  "  A B C D E F G H" :
-  [ show row ++ " "
-  ++ unwords [show (board ! (row, col)) | col <- [1..8]]
-  ++ " " ++ show row
-  | row <- [8,7..1]
-  ]
-  ++ ["  A B C D E F G H"]
-boardString Black board =
-  unlines $
-  "  H G F E D C B A" :
-  [ show row ++ " "
-  ++ unwords [show (board ! (row, col)) | col <- [8,7..1]]
-  ++ " " ++ show row
-  | row <- [1..8]
-  ]
-  ++ ["  H G F E D C B A"]
+instance Show Board where
+  show (Board board) = unlines $
+    "  A B C D E F G H  " :
+    [ show row ++ " "
+      ++ unwords [show (board ! (row, col)) | col <- [1..8]]
+      ++ " " ++ show row
+    | row <- [8,7..1]
+    ]
+    ++ ["  A B C D E F G H  "]
 
 initialBoard :: Board
-initialBoard = fromList 8 8 squares
+initialBoard = Board $ fromList 8 8 squares
   where squares =
           pieces White
           ++ pawns White
@@ -64,12 +54,15 @@ initialBoard = fromList 8 8 squares
         pawns color =
           replicate 8 $ Occupied $ Piece color Pawn
 
+-- TODO: Use this function in other functions here too.
+square :: Board -> Position -> Square
+square (Board board) position = board ! position
+
 nextLegalBoards :: Board -> Color -> M.Map Move Board
 nextLegalBoards _ _ = M.empty
 
 piecePositions :: Board -> Color -> S.Set Position
-piecePositions board color =
-  S.fromList
+piecePositions (Board board) color = S.fromList
   [ (row, col)
   | row <- [1 .. nrows board]
   , col <- [1 .. ncols board]
@@ -90,6 +83,6 @@ inCheck :: Board -> Color -> Bool
 inCheck _ _ = False
 
 nextBoard :: Board -> Move -> Board
-nextBoard board (from, to) =
+nextBoard (Board board) (from, to) = Board $
   setElem Empty from $
   setElem (board ! from) to board
