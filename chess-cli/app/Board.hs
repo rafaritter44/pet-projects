@@ -2,6 +2,7 @@ module Board where
 
 import Move
 import Data.Matrix
+import Data.List
 import qualified Data.Map as M
 import qualified Data.Set as S
 
@@ -32,7 +33,7 @@ instance Show Square where
   show (Occupied p) = show p
 
 instance Show Board where
-  show (Board board) = unlines $
+  show (Board board) = intercalate "\n" $
     "  A B C D E F G H  " :
     [ show row ++ " "
       ++ unwords [show (board ! (row, col)) | col <- [1..8]]
