@@ -55,19 +55,22 @@ initialBoard = Board $ fromList 8 8 squares
         pawns color =
           replicate 8 $ Occupied $ Piece color Pawn
 
--- TODO: Use this function in other functions here too.
-square :: Board -> Position -> Square
-square (Board board) position = board ! position
+getSquare :: Board -> Position -> Square
+getSquare (Board board) position = board ! position
+
+setSquare :: Board -> Position -> Square -> Board
+setSquare (Board board) position square = Board $
+  setElem square position board
 
 nextLegalBoards :: Board -> Color -> M.Map Move Board
 nextLegalBoards _ _ = M.empty
 
 piecePositions :: Board -> Color -> S.Set Position
-piecePositions (Board board) color = S.fromList
+piecePositions board color = S.fromList
   [ (row, col)
-  | row <- [1 .. nrows board]
-  , col <- [1 .. ncols board]
-  , Occupied (Piece pieceColor _) <- [getElem row col board]
+  | row <- [1..8]
+  , col <- [1..8]
+  , Occupied (Piece pieceColor _) <- [getSquare board (row, col)]
   , pieceColor == color
   ]
 
@@ -84,6 +87,5 @@ inCheck :: Board -> Color -> Bool
 inCheck _ _ = False
 
 nextBoard :: Board -> Move -> Board
-nextBoard (Board board) (from, to) = Board $
-  setElem Empty from $
-  setElem (board ! from) to board
+nextBoard board (from, to) =
+  setSquare (setSquare board from Empty) to $ getSquare board from

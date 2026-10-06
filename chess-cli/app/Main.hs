@@ -9,7 +9,7 @@ main :: IO ()
 main = do
   print initialBoard
   putStrLn $ reverse $ show initialBoard
-  let pieces color = map (square initialBoard) (S.toList $ piecePositions initialBoard color)
+  let pieces color = map (getSquare initialBoard) (S.toList $ piecePositions initialBoard color)
   print $ pieces Black
   print $ pieces White
   let move = fromJust $ parseMove "e2e4"
