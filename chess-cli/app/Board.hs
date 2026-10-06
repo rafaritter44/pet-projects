@@ -63,11 +63,11 @@ setSquare :: Position -> Square -> Board -> Board
 setSquare (Position row col) square (Board board) = Board $
   setElem square (row, col) board
 
-nextLegalBoards :: Board -> Color -> M.Map Move Board
-nextLegalBoards _ _ = M.empty
+getNextLegalBoards :: Board -> Color -> M.Map Move Board
+getNextLegalBoards _ _ = M.empty
 
-piecePositions :: Board -> Color -> S.Set Position
-piecePositions board color = S.fromList
+getPiecePositions :: Board -> Color -> S.Set Position
+getPiecePositions board color = S.fromList
   [ Position row col
   | row <- [1..8]
   , col <- [1..8]
@@ -75,17 +75,17 @@ piecePositions board color = S.fromList
   , pieceColor == color
   ]
 
-attackedPositions :: Board -> Color -> S.Set Position
-attackedPositions _ _ = S.empty
+getAttackedPositions :: Board -> Color -> S.Set Position
+getAttackedPositions _ _ = S.empty
 
-attackedPositionsFrom :: Board -> Position -> S.Set Position
-attackedPositionsFrom _ _ = S.empty
+getAttackedPositionsFrom :: Board -> Position -> S.Set Position
+getAttackedPositionsFrom _ _ = S.empty
 
-reachablePositionsFrom :: Board -> Position -> S.Set Position
-reachablePositionsFrom _ _ = S.empty
+getReachablePositionsFrom :: Board -> Position -> S.Set Position
+getReachablePositionsFrom _ _ = S.empty
 
-inCheck :: Board -> Color -> Bool
-inCheck _ _ = False
+isInCheck :: Board -> Color -> Bool
+isInCheck _ _ = False
 
 getNextBoard :: Board -> Move -> Board
 getNextBoard board (Move from to) = board

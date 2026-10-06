@@ -8,7 +8,7 @@ main :: IO ()
 main = do
   print initialBoard
   putStrLn $ reverse $ show initialBoard
-  let pieces color = map (getSquare initialBoard) (S.toList $ piecePositions initialBoard color)
+  let pieces color = map (getSquare initialBoard) (S.toList $ getPiecePositions initialBoard color)
   print $ pieces Black
   print $ pieces White
   gameLoop initialBoard
