@@ -5,6 +5,7 @@ import Text.Read
 
 gameLoop :: Board -> Color -> IO ()
 gameLoop currentBoard currentPlayer = do
+  putStrLn $ show currentPlayer ++ "'s turn."
   case currentPlayer of
     White -> print currentBoard
     Black -> putStrLn $ reverse $ show currentBoard

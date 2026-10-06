@@ -8,7 +8,7 @@ import qualified Data.Map as M
 import qualified Data.Set as S
 
 data Color = White | Black
-  deriving (Eq)
+  deriving (Eq, Show)
 data PieceType = Pawn | Knight | Bishop | Rook | Queen | King
 data Piece = Piece Color PieceType
 data Square = Empty | Occupied Piece
