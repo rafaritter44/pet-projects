@@ -17,5 +17,5 @@ gameLoop currentBoard currentPlayer = do
       let nextPlayer = getNextPlayer currentPlayer
       gameLoop nextBoard nextPlayer
     Nothing -> do
-      putStrLn "Invalid move."
+      putStrLn "Invalid move. Example of a valid move: e2e4"
       gameLoop currentBoard currentPlayer
