@@ -1,6 +1,7 @@
 module Main where
 
 import Board
+import Text.Read
 import qualified Data.Set as S
 
 main :: IO ()
@@ -10,5 +11,7 @@ main = do
   let pieces color = map (getSquare initialBoard) (S.toList $ piecePositions initialBoard color)
   print $ pieces Black
   print $ pieces White
-  let move = read "e2e4"
-  print $ nextBoard initialBoard move
+  input <- readMaybe <$> getLine
+  case input of
+    Just move -> print $ nextBoard initialBoard move
+    Nothing   -> putStrLn "Invalid move"
