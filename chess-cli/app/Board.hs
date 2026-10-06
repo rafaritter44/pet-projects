@@ -87,7 +87,7 @@ reachablePositionsFrom _ _ = S.empty
 inCheck :: Board -> Color -> Bool
 inCheck _ _ = False
 
-nextBoard :: Board -> Move -> Board
-nextBoard board (Move from to) = board
+getNextBoard :: Board -> Move -> Board
+getNextBoard board (Move from to) = board
   & setSquare from Empty
   & setSquare to (getSquare board from)
