@@ -3,6 +3,7 @@ module Board where
 import Move
 import Data.Matrix
 import Data.List
+import Data.Function
 import qualified Data.Map as M
 import qualified Data.Set as S
 
@@ -58,8 +59,8 @@ initialBoard = Board $ fromList 8 8 squares
 getSquare :: Board -> Position -> Square
 getSquare (Board board) position = board ! position
 
-setSquare :: Board -> Position -> Square -> Board
-setSquare (Board board) position square = Board $
+setSquare :: Position -> Square -> Board -> Board
+setSquare position square (Board board) = Board $
   setElem square position board
 
 nextLegalBoards :: Board -> Color -> M.Map Move Board
@@ -87,5 +88,6 @@ inCheck :: Board -> Color -> Bool
 inCheck _ _ = False
 
 nextBoard :: Board -> Move -> Board
-nextBoard board (from, to) =
-  setSquare (setSquare board from Empty) to $ getSquare board from
+nextBoard board (from, to) = board
+  & setSquare from Empty
+  & setSquare to (getSquare board from)
