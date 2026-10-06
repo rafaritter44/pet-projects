@@ -56,6 +56,10 @@ initialBoard = Board $ fromList 8 8 squares
         pawns color =
           replicate 8 $ Occupied $ Piece color Pawn
 
+getNextPlayer :: Color -> Color
+getNextPlayer White = Black
+getNextPlayer Black = White
+
 getSquare :: Board -> Position -> Square
 getSquare (Board board) (Position row col) = board ! (row, col)
 
