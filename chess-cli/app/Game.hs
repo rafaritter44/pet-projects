@@ -8,7 +8,7 @@ gameLoop currentBoard currentPlayer = do
   case currentPlayer of
     White -> print currentBoard
     Black -> putStrLn $ reverse $ show currentBoard
-  putStr "Enter your move: "
+  putStrLn "Enter your move:"
   input <- readMaybe <$> getLine
   case input of
     Just move -> do
