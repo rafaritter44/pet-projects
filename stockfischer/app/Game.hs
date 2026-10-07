@@ -1,6 +1,7 @@
 module Game where
 
 import Board
+import Piece
 import Text.Read
 
 gameLoop :: Board -> Color -> IO ()
