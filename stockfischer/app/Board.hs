@@ -34,10 +34,10 @@ instance Show Square where
   show (Occupied p) = show p
 
 instance Show Board where
-  show (Board board) = intercalate "\n" $
+  show board = intercalate "\n" $
     "  A B C D E F G H  " :
     [ show row ++ " "
-      ++ unwords [show (board ! (row, col)) | col <- [1..8]]
+      ++ unwords [show (getSquare board (Position row col)) | col <- [1..8]]
       ++ " " ++ show row
     | row <- [8,7..1]
     ]
