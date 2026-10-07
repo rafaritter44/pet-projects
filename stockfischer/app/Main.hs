@@ -2,7 +2,6 @@ module Main where
 
 import Game
 import Board
-import Piece
 import qualified Data.Set as S
 
 main :: IO ()

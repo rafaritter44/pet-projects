@@ -1,7 +1,6 @@
 module Game where
 
 import Board
-import Piece
 import Text.Read
 
 gameLoop :: Board -> Color -> IO ()
@@ -20,3 +19,7 @@ gameLoop currentBoard currentPlayer = do
     Nothing -> do
       putStrLn "Invalid input. Example of a valid input: e2e4"
       gameLoop currentBoard currentPlayer
+
+getNextPlayer :: Color -> Color
+getNextPlayer White = Black
+getNextPlayer Black = White
