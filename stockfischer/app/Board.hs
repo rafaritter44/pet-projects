@@ -59,7 +59,7 @@ getSquareMaybe :: Board -> Position -> Maybe Square
 getSquareMaybe (Board board) (Position row col) = safeGet row col board
 
 getSquare :: Board -> Position -> Square
-getSquare (Board board) (Position row col) = board ! (row, col)
+getSquare (Board board) (Position row col) = getElem row col board
 
 setSquare :: Position -> Square -> Board -> Board
 setSquare (Position row col) square (Board board) = Board $
