@@ -21,15 +21,15 @@ getAttackedPositionsFrom board position = case getSquare board position of
   Occupied (Piece color Queen)  -> S.empty
   Occupied (Piece color King)   -> S.empty
 
-getReachablePositionsFrom :: Board -> Position -> S.Set Position
+getReachablePositionsFrom :: Board -> Position -> [Position]
 getReachablePositionsFrom board position = case getSquare board position of
-  Empty -> S.empty
-  Occupied (Piece color Pawn)   -> S.empty
-  Occupied (Piece color Knight) -> S.empty
-  Occupied (Piece color Bishop) -> S.empty
-  Occupied (Piece color Rook)   -> S.empty
-  Occupied (Piece color Queen)  -> S.empty
-  Occupied (Piece color King)   -> S.empty
+  Empty -> []
+  Occupied (Piece color Pawn)   -> []
+  Occupied (Piece color Knight) -> []
+  Occupied (Piece color Bishop) -> []
+  Occupied (Piece color Rook)   -> []
+  Occupied (Piece color Queen)  -> []
+  Occupied (Piece color King)   -> []
 
 isInCheck :: Board -> Color -> Bool
 isInCheck _ _ = False
