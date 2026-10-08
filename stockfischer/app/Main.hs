@@ -2,11 +2,10 @@ module Main where
 
 import Game
 import Board
-import qualified Data.Set as S
 
 main :: IO ()
 main = do
-  let pieces color = map (getSquare initialBoard) (S.toList $ getPiecePositions initialBoard color)
-  print $ pieces Black
-  print $ pieces White
+  let getPieces = map (getSquare initialBoard) . getPiecePositions initialBoard
+  print $ getPieces Black
+  print $ getPieces White
   gameLoop initialBoard White

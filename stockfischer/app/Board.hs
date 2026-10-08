@@ -4,7 +4,6 @@ import Move
 import Data.Matrix
 import Data.List
 import Data.Function
-import qualified Data.Set as S
 
 data Color = White | Black
   deriving (Eq, Show)
@@ -65,8 +64,8 @@ setSquare :: Position -> Square -> Board -> Board
 setSquare (Position row col) square (Board board) = Board $
   setElem square (row, col) board
 
-getPiecePositions :: Board -> Color -> S.Set Position
-getPiecePositions board color = S.fromList
+getPiecePositions :: Board -> Color -> [Position]
+getPiecePositions board color =
   [ Position row col
   | row <- [1..8]
   , col <- [1..8]
