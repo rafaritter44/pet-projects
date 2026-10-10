@@ -54,9 +54,6 @@ initialBoard = Board $ fromList 8 8 squares
         pawns color =
           replicate 8 $ Occupied $ Piece color Pawn
 
-getSquareMaybe :: Board -> Position -> Maybe Square
-getSquareMaybe (Board board) (Position row col) = safeGet row col board
-
 getSquare :: Board -> Position -> Square
 getSquare (Board board) (Position row col) = getElem row col board
 
