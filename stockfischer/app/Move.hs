@@ -39,8 +39,8 @@ instance Read Move where
     return (Move from to, "")
   readsPrec _ _ = []
 
-getRelativePositionsFrom :: Position -> [Offset] -> [Position]
-getRelativePositionsFrom (Position row col) offsets =
+getRelativePositions :: Position -> [Offset] -> [Position]
+getRelativePositions (Position row col) offsets =
   [ Position relativeRow relativeCol
   | Offset rowOffset colOffset <- offsets
   , let relativeRow = row + rowOffset
