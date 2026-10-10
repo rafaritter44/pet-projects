@@ -31,5 +31,12 @@ getReachablePositionsFrom board position = case getSquare board position of
   Occupied (Piece color Queen)  -> []
   Occupied (Piece color King)   -> []
 
+-- | Returns the positions a piece could move to on all possible boards.
+getNextCandidatePositionsFrom :: Board -> Position -> [Position]
+getNextCandidatePositionsFrom _ _ = []
+
+isPositionReachableFrom :: Board -> Position -> Position -> Bool
+isPositionReachableFrom _ _ _ = False
+
 isInCheck :: Board -> Color -> Bool
 isInCheck _ _ = False
