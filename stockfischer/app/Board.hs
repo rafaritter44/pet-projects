@@ -32,7 +32,8 @@ instance Show Square where
   show (Occupied p) = show p
 
 instance Show Board where
-  show board = intercalate "\n" $
+  show board =
+    intercalate "\n" $
     "  A B C D E F G H  " :
     [ show row ++ " "
       ++ unwords [show (getSquare board (Position row col)) | col <- [1..8]]
@@ -42,17 +43,18 @@ instance Show Board where
     ++ ["  A B C D E F G H  "]
 
 initialBoard :: Board
-initialBoard = Board $ fromList 8 8 squares where
-  squares =
-    pieces White
-    ++ pawns White
-    ++ replicate 32 Empty
-    ++ pawns Black
-    ++ pieces Black
-  pieces color =
-    map (Occupied . Piece color) [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
-  pawns color =
-    replicate 8 $ Occupied $ Piece color Pawn
+initialBoard = Board $ fromList 8 8 squares
+  where
+    squares =
+      pieces White
+      ++ pawns White
+      ++ replicate 32 Empty
+      ++ pawns Black
+      ++ pieces Black
+    pieces color =
+      map (Occupied . Piece color) [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+    pawns color =
+      replicate 8 $ Occupied $ Piece color Pawn
 
 getSquare :: Board -> Position -> Square
 getSquare (Board board) (Position row col) = getElem row col board
