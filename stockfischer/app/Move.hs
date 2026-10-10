@@ -50,6 +50,9 @@ getRelativePosition (Position row col) (Offset rowOffset colOffset)
   where
     position = Position (row + rowOffset) (col + colOffset)
 
+getPositionsInDirection :: Position -> Offset -> [Position]
+getPositionsInDirection _ _ = []
+
 isOnBoard :: Position -> Bool
 isOnBoard (Position row col) = isWithinBounds row && isWithinBounds col
 
