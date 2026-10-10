@@ -5,6 +5,7 @@ import Data.Char
 data Position = Position Int Int
   deriving (Eq, Ord)
 data Move = Move Position Position
+data Offset = Offset Int Int
 
 instance Read Position where
   readsPrec _ [file, rank] = do
@@ -37,3 +38,16 @@ instance Read Move where
     (to, _)   <- reads [toFile, toRank]
     return (Move from to, "")
   readsPrec _ _ = []
+
+getRelativePositionsFrom :: Position -> [Offset] -> [Position]
+getRelativePositionsFrom (Position row col) offsets =
+  [ Position relativeRow relativeCol
+  | Offset rowOffset colOffset <- offsets
+  , let relativeRow = row + rowOffset
+  , let relativeCol = col + colOffset
+  , isWithinBounds relativeRow
+  , isWithinBounds relativeCol
+  ]
+
+isWithinBounds :: Int -> Bool
+isWithinBounds coordinate = coordinate >= 1 && coordinate <= 8
