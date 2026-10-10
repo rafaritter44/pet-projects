@@ -1,6 +1,7 @@
 module Move where
 
 import Data.Char
+import Data.Maybe
 
 data Position = Position Int Int
   deriving (Eq, Ord)
@@ -40,14 +41,17 @@ instance Read Move where
   readsPrec _ _ = []
 
 getRelativePositions :: Position -> [Offset] -> [Position]
-getRelativePositions (Position row col) offsets =
-  [ Position relativeRow relativeCol
-  | Offset rowOffset colOffset <- offsets
-  , let relativeRow = row + rowOffset
-  , let relativeCol = col + colOffset
-  , isWithinBounds relativeRow
-  , isWithinBounds relativeCol
-  ]
+getRelativePositions = mapMaybe . getRelativePosition
+
+getRelativePosition :: Position -> Offset -> Maybe Position
+getRelativePosition (Position row col) (Offset rowOffset colOffset)
+  | isOnBoard position = Just position
+  | otherwise          = Nothing
+  where
+    position = Position (row + rowOffset) (col + colOffset)
+
+isOnBoard :: Position -> Bool
+isOnBoard (Position row col) = isWithinBounds row && isWithinBounds col
 
 isWithinBounds :: Int -> Bool
 isWithinBounds coordinate = coordinate >= 1 && coordinate <= 8
