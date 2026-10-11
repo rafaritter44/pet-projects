@@ -61,5 +61,13 @@ isPositionReachable board from to = case getSquare board from of
   Occupied (Piece color Queen)  -> False
   Occupied (Piece color King)   -> False
 
+isPositionAvailable :: Board -> Position -> Position -> Bool
+isPositionAvailable board from to = case (getSquare' from, getSquare' to) of
+  (Occupied _, Empty) -> True
+  (Occupied (Piece fromColor _), Occupied (Piece toColor _)) -> fromColor /= toColor
+  _ -> False
+  where
+    getSquare' = getSquare board
+
 isInCheck :: Board -> Color -> Bool
 isInCheck _ _ = False
