@@ -86,6 +86,9 @@ getRelativePosition (Position row col) (Offset rowOffset colOffset)
   where
     position = Position (row + rowOffset) (col + colOffset)
 
+getPositionsInDirections :: Position -> [Offset] -> [Position]
+getPositionsInDirections = concatMap . getPositionsInDirection
+
 getPositionsInDirection :: Position -> Offset -> [Position]
 getPositionsInDirection position offset =
   case getRelativePosition position offset of
