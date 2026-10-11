@@ -22,14 +22,8 @@ getAttackedPositions board position = case getSquare board position of
   Occupied (Piece color King)   -> S.empty
 
 getReachablePositions :: Board -> Position -> [Position]
-getReachablePositions board position = case getSquare board position of
-  Empty -> []
-  Occupied (Piece color Pawn)   -> []
-  Occupied (Piece color Knight) -> []
-  Occupied (Piece color Bishop) -> []
-  Occupied (Piece color Rook)   -> []
-  Occupied (Piece color Queen)  -> []
-  Occupied (Piece color King)   -> []
+getReachablePositions board from =
+  filter (isPositionReachable board from) (getNextCandidatePositions board from)
 
 -- | Returns the positions a piece could move to on all possible boards.
 getNextCandidatePositions :: Board -> Position -> [Position]
