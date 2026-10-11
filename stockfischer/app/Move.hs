@@ -41,16 +41,16 @@ instance Read Move where
   readsPrec _ _ = []
 
 up, down, left, right :: Offset
-up    = Offset (-1) 0
-down  = Offset 1 0
+up    = Offset 1 0
+down  = Offset (-1) 0
 left  = Offset 0 (-1)
 right = Offset 0 1
 
 upLeft, upRight, downLeft, downRight :: Offset
-upLeft    = Offset (-1) (-1)
-upRight   = Offset (-1) 1
-downLeft  = Offset 1 (-1)
-downRight = Offset 1 1
+upLeft    = Offset 1 (-1)
+upRight   = Offset 1 1
+downLeft  = Offset (-1) (-1)
+downRight = Offset (-1) 1
 
 orthogonalOffsets, diagonalOffsets, adjacentOffsets :: [Offset]
 orthogonalOffsets = [up, down, left, right]
@@ -59,14 +59,14 @@ adjacentOffsets = orthogonalOffsets ++ diagonalOffsets
 
 knightUpLeft, knightUpRight, knightLeftUp, knightRightUp :: Offset
 knightLeftDown, knightRightDown, knightDownLeft, knightDownRight :: Offset
-knightUpLeft    = Offset (-2) (-1)
-knightUpRight   = Offset (-2) 1
-knightLeftUp    = Offset (-1) (-2)
-knightRightUp   = Offset (-1) 2
-knightLeftDown  = Offset 1 (-2)
-knightRightDown = Offset 1 2
-knightDownLeft  = Offset 2 (-1)
-knightDownRight = Offset 2 1
+knightUpLeft    = Offset 2 (-1)
+knightUpRight   = Offset 2 1
+knightLeftUp    = Offset 1 (-2)
+knightRightUp   = Offset 1 2
+knightLeftDown  = Offset (-1) (-2)
+knightRightDown = Offset (-1) 2
+knightDownLeft  = Offset (-2) (-1)
+knightDownRight = Offset (-2) 1
 
 knightOffsets :: [Offset]
 knightOffsets =
