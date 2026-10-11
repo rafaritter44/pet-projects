@@ -3,7 +3,9 @@ module Move where
 import Data.Char
 import Data.Maybe
 
-data Position = Position Int Int
+type Coordinate = Int
+
+data Position = Position Coordinate Coordinate
   deriving (Eq, Ord)
 data Move = Move Position Position
 data Offset = Offset Int Int
@@ -120,11 +122,11 @@ getNextPositionBetween (Position fromRow fromCol) (Position toRow toCol) =
     (getNextCoordinateBetween fromRow toRow)
     (getNextCoordinateBetween fromCol toCol)
 
-getNextCoordinateBetween :: Int -> Int -> Int
+getNextCoordinateBetween :: Coordinate -> Coordinate -> Coordinate
 getNextCoordinateBetween from to = from + signum (to - from)
 
 isOnBoard :: Position -> Bool
 isOnBoard (Position row col) = isWithinBounds row && isWithinBounds col
 
-isWithinBounds :: Int -> Bool
+isWithinBounds :: Coordinate -> Bool
 isWithinBounds coordinate = coordinate >= 1 && coordinate <= 8
