@@ -36,11 +36,11 @@ getNextCandidatePositionsFrom :: Board -> Position -> [Position]
 getNextCandidatePositionsFrom board position = case getSquare board position of
   Empty -> []
   Occupied (Piece color Pawn) -> []
-  Occupied (Piece _ Knight)   -> []
-  Occupied (Piece _ Bishop)   -> []
-  Occupied (Piece _ Rook)     -> []
-  Occupied (Piece _ Queen)    -> []
-  Occupied (Piece _ King)     -> []
+  Occupied (Piece _ Knight)   -> getRelativePositions position knightOffsets
+  Occupied (Piece _ Bishop)   -> getPositionsInDirections position diagonalOffsets
+  Occupied (Piece _ Rook)     -> getPositionsInDirections position orthogonalOffsets
+  Occupied (Piece _ Queen)    -> getPositionsInDirections position adjacentOffsets
+  Occupied (Piece _ King)     -> getRelativePositions position adjacentOffsets
 
 isPositionReachableFrom :: Board -> Position -> Position -> Bool
 isPositionReachableFrom board from to = case getSquare board from of
