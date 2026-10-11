@@ -69,5 +69,9 @@ isPositionAvailable board from to = case (getSquare' from, getSquare' to) of
   where
     getSquare' = getSquare board
 
+isPathClear :: Board -> Position -> Position -> Bool
+isPathClear board from to =
+  all ((== Empty) . getSquare board) $ getPositionsBetween from to
+
 isInCheck :: Board -> Color -> Bool
 isInCheck _ _ = False
