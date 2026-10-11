@@ -54,12 +54,15 @@ getNextCandidatePositions board position = case getSquare board position of
 isPositionReachable :: Board -> Position -> Position -> Bool
 isPositionReachable board from to = case getSquare board from of
   Empty -> False
-  Occupied (Piece color Pawn)   -> False
-  Occupied (Piece color Knight) -> False
-  Occupied (Piece color Bishop) -> False
-  Occupied (Piece color Rook)   -> False
-  Occupied (Piece color Queen)  -> False
-  Occupied (Piece color King)   -> False
+  Occupied (Piece _ Pawn)   -> isPositionAvailable' && isPathClear' -- TODO: FIXME
+  Occupied (Piece _ Knight) -> isPositionAvailable'
+  Occupied (Piece _ Bishop) -> isPositionAvailable' && isPathClear'
+  Occupied (Piece _ Rook)   -> isPositionAvailable' && isPathClear'
+  Occupied (Piece _ Queen)  -> isPositionAvailable' && isPathClear'
+  Occupied (Piece _ King)   -> isPositionAvailable'
+  where
+    isPositionAvailable' = isPositionAvailable board from to
+    isPathClear'         = isPathClear board from to
 
 isPositionAvailable :: Board -> Position -> Position -> Bool
 isPositionAvailable board from to = case (getSquare' from, getSquare' to) of
