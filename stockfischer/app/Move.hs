@@ -107,6 +107,22 @@ getPositionsInDirection position offset =
     Just nextPosition -> nextPosition : getPositionsInDirection nextPosition offset
     Nothing           -> []
 
+getPositionsBetween :: Position -> Position -> [Position]
+getPositionsBetween from to
+  | next == to = []
+  | otherwise  = next : getPositionsBetween next to
+  where
+    next = getNextPositionBetween from to
+
+getNextPositionBetween :: Position -> Position -> Position
+getNextPositionBetween (Position fromRow fromCol) (Position toRow toCol) =
+  Position
+    (getNextCoordinateBetween fromRow toRow)
+    (getNextCoordinateBetween fromCol toCol)
+
+getNextCoordinateBetween :: Int -> Int -> Int
+getNextCoordinateBetween from to = from + signum (to - from)
+
 isOnBoard :: Position -> Bool
 isOnBoard (Position row col) = isWithinBounds row && isWithinBounds col
 
