@@ -57,6 +57,18 @@ orthogonalOffsets = [up, down, left, right]
 diagonalOffsets = [upLeft, upRight, downLeft, downRight]
 adjacentOffsets = orthogonalOffsets ++ diagonalOffsets
 
+twoUp, twoDown :: Offset
+twoUp   = Offset 2 0
+twoDown = Offset (-2) 0
+
+whitePawnOffsets, blackPawnOffsets :: [Offset]
+whitePawnOffsets = [up, upLeft, upRight]
+blackPawnOffsets = [down, downLeft, downRight]
+
+initialWhitePawnOffsets, initialBlackPawnOffsets :: [Offset]
+initialWhitePawnOffsets = twoUp : whitePawnOffsets
+initialBlackPawnOffsets = twoDown : blackPawnOffsets
+
 knightUpLeft, knightUpRight, knightLeftUp, knightRightUp :: Offset
 knightLeftDown, knightRightDown, knightDownLeft, knightDownRight :: Offset
 knightUpLeft    = Offset 2 (-1)

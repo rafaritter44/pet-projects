@@ -8,8 +8,11 @@ import Data.Function
 data Color = White | Black
   deriving (Eq, Show)
 data PieceType = Pawn | Knight | Bishop | Rook | Queen | King
+  deriving (Eq)
 data Piece = Piece Color PieceType
+  deriving (Eq)
 data Square = Empty | Occupied Piece
+  deriving (Eq)
 
 newtype Board = Board (Matrix Square)
 
@@ -55,6 +58,9 @@ initialBoard = Board $ fromList 8 8 squares
       map (Occupied . Piece color) [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
     pawns color =
       replicate 8 $ Occupied $ Piece color Pawn
+
+isInitialPosition :: Position -> Square -> Bool
+isInitialPosition = (==) . getSquare initialBoard
 
 getSquare :: Board -> Position -> Square
 getSquare (Board board) (Position row col) = getElem row col board
