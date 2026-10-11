@@ -69,6 +69,13 @@ setSquare :: Position -> Square -> Board -> Board
 setSquare (Position row col) square (Board board) = Board $
   setElem square (row, col) board
 
+getKingPosition :: Board -> Color -> Position
+getKingPosition board color = head
+  [ position
+  | position <- getPiecePositions board color
+  , getSquare board position == Occupied (Piece color King)
+  ]
+
 getPiecePositions :: Board -> Color -> [Position]
 getPiecePositions board color =
   [ Position row col
