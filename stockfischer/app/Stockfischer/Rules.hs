@@ -16,11 +16,11 @@ getAttackedPositions board position = S.fromList $ case getSquare board position
   Empty -> []
   Occupied (Piece White Pawn) -> getRelativePositions' whitePawnAttackOffsets
   Occupied (Piece Black Pawn) -> getRelativePositions' blackPawnAttackOffsets
-  Occupied (Piece _ Knight) -> getRelativePositions' knightOffsets
-  Occupied (Piece _ Bishop) -> getPositionsInDirections' diagonalOffsets
-  Occupied (Piece _ Rook)   -> getPositionsInDirections' orthogonalOffsets
-  Occupied (Piece _ Queen)  -> getPositionsInDirections' adjacentOffsets
-  Occupied (Piece _ King)   -> getRelativePositions' adjacentOffsets
+  Occupied (Piece _ Knight)   -> getRelativePositions' knightOffsets
+  Occupied (Piece _ Bishop)   -> getPositionsInDirections' diagonalOffsets
+  Occupied (Piece _ Rook)     -> getPositionsInDirections' orthogonalOffsets
+  Occupied (Piece _ Queen)    -> getPositionsInDirections' adjacentOffsets
+  Occupied (Piece _ King)     -> getRelativePositions' adjacentOffsets
   where
     getRelativePositions'     = getRelativePositions position
     getPositionsInDirections' = getPositionsInDirections position
