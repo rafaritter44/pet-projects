@@ -143,3 +143,6 @@ isOnBoard (Position row col) = isWithinBounds row && isWithinBounds col
 
 isWithinBounds :: Coordinate -> Bool
 isWithinBounds coordinate = coordinate >= 1 && coordinate <= 8
+
+isSameColumn :: Position -> Position -> Bool
+isSameColumn (Position _ col1) (Position _ col2) = col1 == col2
