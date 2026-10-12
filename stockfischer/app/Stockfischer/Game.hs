@@ -7,18 +7,16 @@ import qualified Data.Map as M
 
 gameLoop :: Board -> Color -> IO ()
 gameLoop currentBoard currentPlayer = do
+  case currentPlayer of
+    White -> print currentBoard
+    Black -> putStrLn $ reverse $ show currentBoard
   let nextLegalBoards = getNextLegalBoards currentBoard currentPlayer
   if M.null nextLegalBoards
-    then do
-      let result = if isInCheck currentBoard currentPlayer
-          then "Checkmate. " ++ show nextPlayer ++ " won."
-          else "Stalemate."
-      putStrLn $ "Game over: " ++ result
+    then putStrLn $ if isInCheck currentBoard currentPlayer
+      then "Checkmate. " ++ show nextPlayer ++ " won."
+      else "Stalemate."
     else do
       putStrLn $ show currentPlayer ++ "'s turn."
-      case currentPlayer of
-        White -> print currentBoard
-        Black -> putStrLn $ reverse $ show currentBoard
       putStrLn "Enter your move:"
       input <- readMaybe <$> getLine
       case input of
