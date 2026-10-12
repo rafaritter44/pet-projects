@@ -1,6 +1,6 @@
-module Board where
+module Stockfischer.Board where
 
-import Moves
+import Stockfischer.Moves
 import Data.Matrix
 import Data.List
 import Data.Function

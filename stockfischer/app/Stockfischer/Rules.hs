@@ -1,7 +1,7 @@
-module Rules where
+module Stockfischer.Rules where
 
-import Board
-import Moves
+import Stockfischer.Board
+import Stockfischer.Moves
 import qualified Data.Map as M
 import qualified Data.Set as S
 

@@ -1,6 +1,6 @@
-module Game where
+module Stockfischer.Game where
 
-import Board
+import Stockfischer.Board
 import Text.Read
 
 gameLoop :: Board -> Color -> IO ()

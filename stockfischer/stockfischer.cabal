@@ -62,7 +62,11 @@ executable stockfischer
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules:    Game, Rules, Board, Moves
+    other-modules:
+        Stockfischer.Game
+        Stockfischer.Rules
+        Stockfischer.Board
+        Stockfischer.Moves
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

@@ -1,4 +1,4 @@
-module Moves where
+module Stockfischer.Moves where
 
 import Data.Char
 import Data.Maybe

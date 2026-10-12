@@ -1,7 +1,7 @@
 module Main where
 
-import Game
-import Board
+import Stockfischer.Game
+import Stockfischer.Board
 
 main :: IO ()
 main = do
