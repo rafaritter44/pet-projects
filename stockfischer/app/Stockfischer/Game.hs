@@ -20,9 +20,12 @@ gameLoop currentBoard currentPlayer = do
         Just nextBoard -> do
           let nextPlayer = getNextPlayer currentPlayer
           gameLoop nextBoard nextPlayer
-        Nothing -> do
-          putStrLn "Illegal move. Try again."
-          gameLoop currentBoard currentPlayer
-    Nothing -> do
-      putStrLn "Invalid input. Example of a valid input: e2e4"
-      gameLoop currentBoard currentPlayer
+        Nothing -> retryTurn' "Illegal move. Try again."
+    Nothing -> retryTurn' "Invalid input. Example of a valid input: e2e4"
+    where
+      retryTurn' = retryTurn currentBoard currentPlayer
+
+retryTurn :: Board -> Color -> String -> IO ()
+retryTurn board player message = do
+  putStrLn message
+  gameLoop board player
