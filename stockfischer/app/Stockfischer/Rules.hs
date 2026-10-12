@@ -9,7 +9,10 @@ getNextLegalBoards :: Board -> Color -> M.Map Move Board
 getNextLegalBoards _ _ = M.empty
 
 getAllAttackedPositions :: Board -> Color -> S.Set Position
-getAllAttackedPositions _ _ = S.empty
+getAllAttackedPositions board color = S.unions
+  [ getAttackedPositions board position
+  | position <- getPiecePositions board color
+  ]
 
 getAttackedPositions :: Board -> Position -> S.Set Position
 getAttackedPositions board position = S.fromList $ case getSquare board position of
