@@ -13,15 +13,15 @@ data Offset = Offset Int Int
 
 instance Read Position where
   readsPrec _ [file, rank] = do
-    col <- case toUpper file of
-      'A' -> [1]
-      'B' -> [2]
-      'C' -> [3]
-      'D' -> [4]
-      'E' -> [5]
-      'F' -> [6]
-      'G' -> [7]
-      'H' -> [8]
+    col <- case toLower file of
+      'a' -> [1]
+      'b' -> [2]
+      'c' -> [3]
+      'd' -> [4]
+      'e' -> [5]
+      'f' -> [6]
+      'g' -> [7]
+      'h' -> [8]
       _   -> []
     row <- case rank of
       '1' -> [1]
