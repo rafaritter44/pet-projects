@@ -43,6 +43,15 @@ instance Read Move where
     return (Move from to, "")
   readsPrec _ _ = []
 
+instance Show Position where
+  show (Position row col) = [file, rank]
+  where
+    file = "abcdefgh" !! (col - 1)
+    rank = "12345678" !! (row - 1)
+
+instance Show Move where
+  show (Move from to) = show from ++ show to
+
 up, down, left, right :: Offset
 up    = Offset 1 0
 down  = Offset (-1) 0
