@@ -12,14 +12,18 @@ getAllAttackedPositions :: Board -> Color -> S.Set Position
 getAllAttackedPositions _ _ = S.empty
 
 getAttackedPositions :: Board -> Position -> S.Set Position
-getAttackedPositions board position = case getSquare board position of
-  Empty -> S.empty
-  Occupied (Piece color Pawn)   -> S.empty
-  Occupied (Piece color Knight) -> S.empty
-  Occupied (Piece color Bishop) -> S.empty
-  Occupied (Piece color Rook)   -> S.empty
-  Occupied (Piece color Queen)  -> S.empty
-  Occupied (Piece color King)   -> S.empty
+getAttackedPositions board position = S.fromList $ case getSquare board position of
+  Empty -> []
+  Occupied (Piece White Pawn) -> getRelativePositions' whitePawnAttackOffsets
+  Occupied (Piece Black Pawn) -> getRelativePositions' blackPawnAttackOffsets
+  Occupied (Piece _ Knight) -> getRelativePositions' knightOffsets
+  Occupied (Piece _ Bishop) -> getPositionsInDirections' diagonalOffsets
+  Occupied (Piece _ Rook)   -> getPositionsInDirections' orthogonalOffsets
+  Occupied (Piece _ Queen)  -> getPositionsInDirections' adjacentOffsets
+  Occupied (Piece _ King)   -> getRelativePositions' adjacentOffsets
+  where
+    getRelativePositions'     = getRelativePositions position
+    getPositionsInDirections' = getPositionsInDirections position
 
 getReachablePositions :: Board -> Position -> [Position]
 getReachablePositions board from =
