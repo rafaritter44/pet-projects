@@ -8,6 +8,7 @@ type Coordinate = Int
 data Position = Position Coordinate Coordinate
   deriving (Eq, Ord)
 data Move = Move Position Position
+  deriving (Eq, Ord)
 data Offset = Offset Int Int
 
 instance Read Position where

@@ -6,7 +6,14 @@ import qualified Data.Map as M
 import qualified Data.Set as S
 
 getNextLegalBoards :: Board -> Color -> M.Map Move Board
-getNextLegalBoards _ _ = M.empty
+getNextLegalBoards board color = M.fromList
+  [ (move, nextBoard)
+  | from <- getPiecePositions board color
+  , to   <- getReachablePositions board from
+  , let move      = Move from to
+  , let nextBoard = getNextBoard board move
+  , not $ isInCheck nextBoard color
+  ]
 
 isInCheck :: Board -> Color -> Bool
 isInCheck board color =
