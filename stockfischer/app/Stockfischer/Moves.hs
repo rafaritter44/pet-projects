@@ -44,8 +44,7 @@ instance Read Move where
   readsPrec _ _ = []
 
 instance Show Position where
-  show (Position row col) = [file, rank]
-  where
+  show (Position row col) = [file, rank] where
     file = "abcdefgh" !! (col - 1)
     rank = "12345678" !! (row - 1)
 
