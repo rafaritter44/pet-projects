@@ -1,4 +1,4 @@
-module Move where
+module Moves where
 
 import Data.Char
 import Data.Maybe

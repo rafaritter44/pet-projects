@@ -1,7 +1,7 @@
 module Rules where
 
 import Board
-import Move
+import Moves
 import qualified Data.Map as M
 import qualified Data.Set as S
 

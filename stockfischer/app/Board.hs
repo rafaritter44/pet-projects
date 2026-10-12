@@ -1,6 +1,6 @@
 module Board where
 
-import Move
+import Moves
 import Data.Matrix
 import Data.List
 import Data.Function
