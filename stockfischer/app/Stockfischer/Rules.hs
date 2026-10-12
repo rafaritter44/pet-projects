@@ -8,6 +8,14 @@ import qualified Data.Set as S
 getNextLegalBoards :: Board -> Color -> M.Map Move Board
 getNextLegalBoards _ _ = M.empty
 
+isInCheck :: Board -> Color -> Bool
+isInCheck board color =
+  getKingPosition board color `S.member` getAllAttackedPositions board (getNextPlayer color)
+
+getNextPlayer :: Color -> Color
+getNextPlayer White = Black
+getNextPlayer Black = White
+
 getAllAttackedPositions :: Board -> Color -> S.Set Position
 getAllAttackedPositions board color = S.unions
   [ getAttackedPositions board position
@@ -76,6 +84,3 @@ isPositionAvailable board from to = case (getSquare' from, getSquare' to) of
 isPathClear :: Board -> Position -> Position -> Bool
 isPathClear board from to =
   all ((== Empty) . getSquare board) $ getPositionsBetween from to
-
-isInCheck :: Board -> Color -> Bool
-isInCheck _ _ = False

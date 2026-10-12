@@ -1,5 +1,6 @@
 module Stockfischer.Game where
 
+import Stockfischer.Rules
 import Stockfischer.Board
 import Text.Read
 
@@ -19,7 +20,3 @@ gameLoop currentBoard currentPlayer = do
     Nothing -> do
       putStrLn "Invalid input. Example of a valid input: e2e4"
       gameLoop currentBoard currentPlayer
-
-getNextPlayer :: Color -> Color
-getNextPlayer White = Black
-getNextPlayer Black = White
