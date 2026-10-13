@@ -6,17 +6,16 @@ import Text.Read
 import qualified Data.Map as M
 
 gameLoop :: Board -> Color -> IO ()
-gameLoop currentBoard currentPlayer = do
-  case currentPlayer of
-    White -> print currentBoard
-    Black -> putStrLn $ reverse $ show currentBoard
-  let nextLegalBoards = getNextLegalBoards currentBoard currentPlayer
+gameLoop board player = do
+  case player of
+    White -> print board
+    Black -> putStrLn $ reverse $ show board
   if M.null nextLegalBoards
-    then putStrLn $ if isInCheck currentBoard currentPlayer
+    then putStrLn $ if isInCheck board player
       then "Checkmate. " ++ show nextPlayer ++ " won."
       else "Stalemate."
     else do
-      putStrLn $ show currentPlayer ++ "'s turn."
+      putStrLn $ show player ++ "'s turn."
       putStrLn "Enter your move:"
       input <- readMaybe <$> getLine
       case input of
