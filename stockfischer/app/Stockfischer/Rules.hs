@@ -59,22 +59,22 @@ getNextCandidatePositions board position = case getSquare board position of
 isPositionReachable :: Board -> Position -> Position -> Bool
 isPositionReachable board from to = case getSquare board from of
   Empty                     -> False
-  Occupied (Piece _ Knight) -> isPositionAvailable'
-  Occupied (Piece _ _)      -> isPositionAvailable' && isPathClear'
+  Occupied (Piece _ Knight) -> positionAvailable
+  Occupied (Piece _ _)      -> positionAvailable && pathClear
   where
-    isPositionAvailable' = isPositionAvailable board from to
-    isPathClear'         = isPathClear board from to
+    positionAvailable = isPositionAvailable board from to
+    pathClear         = isPathClear board from to
 
 isPositionAvailable :: Board -> Position -> Position -> Bool
 isPositionAvailable board from to = case (getSquare' from, getSquare' to) of
-  (Occupied (Piece _ Pawn), Empty) -> isSameColumn'
+  (Occupied (Piece _ Pawn), Empty) -> sameColumn
   (Occupied _             , Empty) -> True
-  (Occupied (Piece fromColor Pawn), Occupied (Piece toColor _)) -> fromColor /= toColor && not isSameColumn'
+  (Occupied (Piece fromColor Pawn), Occupied (Piece toColor _)) -> fromColor /= toColor && not sameColumn
   (Occupied (Piece fromColor _)   , Occupied (Piece toColor _)) -> fromColor /= toColor
   _ -> False
   where
-    getSquare'    = getSquare board
-    isSameColumn' = isSameColumn from to
+    getSquare' = getSquare board
+    sameColumn = isSameColumn from to
 
 isPathClear :: Board -> Position -> Position -> Bool
 isPathClear board from to =
