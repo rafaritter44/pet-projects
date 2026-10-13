@@ -72,13 +72,9 @@ twoUp, twoDown :: Offset
 twoUp   = Offset 2 0
 twoDown = Offset (-2) 0
 
-whitePawnAttackOffsets, blackPawnAttackOffsets :: [Offset]
-whitePawnAttackOffsets = [upLeft, upRight]
-blackPawnAttackOffsets = [downLeft, downRight]
-
 whitePawnOffsets, blackPawnOffsets :: [Offset]
-whitePawnOffsets = up : whitePawnAttackOffsets
-blackPawnOffsets = down : blackPawnAttackOffsets
+whitePawnOffsets = [up, upLeft, upRight]
+blackPawnOffsets = [down, downLeft, downRight]
 
 initialWhitePawnOffsets, initialBlackPawnOffsets :: [Offset]
 initialWhitePawnOffsets = twoUp : whitePawnOffsets
