@@ -49,14 +49,14 @@ initialBoard :: Board
 initialBoard = Board $ fromList 8 8 squares
   where
     squares =
-      pieces White
-      ++ pawns White
+      getPieces White
+      ++ getPawns White
       ++ replicate 32 Empty
-      ++ pawns Black
-      ++ pieces Black
-    pieces color =
+      ++ getPawns Black
+      ++ getPieces Black
+    getPieces color =
       map (Occupied . Piece color) [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
-    pawns color =
+    getPawns color =
       replicate 8 $ Occupied $ Piece color Pawn
 
 isInitialPosition :: Position -> Square -> Bool
