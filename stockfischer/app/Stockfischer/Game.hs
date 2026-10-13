@@ -25,8 +25,9 @@ gameLoop board player = do
             Nothing        -> retryTurn' "Illegal move. Try again."
         Nothing -> retryTurn' "Invalid input. Example of a valid input: e2e4"
   where
-    nextPlayer = getNextPlayer currentPlayer
-    retryTurn' = retryTurn currentBoard currentPlayer
+    nextLegalBoards = getNextLegalBoards board player
+    nextPlayer      = getNextPlayer player
+    retryTurn'      = retryTurn board player
 
 retryTurn :: Board -> Color -> String -> IO ()
 retryTurn board player message = do
