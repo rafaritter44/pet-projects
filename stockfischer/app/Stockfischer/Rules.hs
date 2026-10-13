@@ -5,13 +5,13 @@ import Stockfischer.Moves
 import qualified Data.Map as M
 
 getNextLegalBoards :: Board -> Color -> M.Map Move Board
-getNextLegalBoards board color = M.fromList
+getNextLegalBoards board player = M.fromList
   [ (move, nextBoard)
-  | from <- getPiecePositions board color
+  | from <- getPiecePositions board player
   , to   <- getReachablePositions board from
   , let move      = Move from to
   , let nextBoard = getNextBoard board move
-  , not $ isInCheck nextBoard color
+  , not $ isInCheck nextBoard player
   ]
 
 isInCheck :: Board -> Color -> Bool
