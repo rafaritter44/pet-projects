@@ -110,6 +110,12 @@ getRelativePosition (Position row col) (Offset rowOffset colOffset)
   where
     position = Position (row + rowOffset) (col + colOffset)
 
+isOnBoard :: Position -> Bool
+isOnBoard (Position row col) = isWithinBounds row && isWithinBounds col
+
+isWithinBounds :: Coordinate -> Bool
+isWithinBounds coordinate = coordinate >= 1 && coordinate <= 8
+
 getPositionsInDirections :: Position -> [Offset] -> [Position]
 getPositionsInDirections = concatMap . getPositionsInDirection
 
@@ -134,12 +140,6 @@ getNextPositionBetween (Position fromRow fromCol) (Position toRow toCol) =
 
 getNextCoordinateBetween :: Coordinate -> Coordinate -> Coordinate
 getNextCoordinateBetween from to = from + signum (to - from)
-
-isOnBoard :: Position -> Bool
-isOnBoard (Position row col) = isWithinBounds row && isWithinBounds col
-
-isWithinBounds :: Coordinate -> Bool
-isWithinBounds coordinate = coordinate >= 1 && coordinate <= 8
 
 isSameColumn :: Position -> Position -> Bool
 isSameColumn (Position _ col1) (Position _ col2) = col1 == col2
