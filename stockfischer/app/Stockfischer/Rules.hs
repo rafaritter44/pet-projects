@@ -26,9 +26,10 @@ getNextPlayer White = Black
 getNextPlayer Black = White
 
 isPositionReachableByAny :: Board -> Position -> Color -> Bool
-isPositionReachableByAny board to color =
-  any (elem to . getReachablePositions') piecePositions
+isPositionReachableByAny board position color =
+  any (containsPosition . getReachablePositions') piecePositions
   where
+    containsPosition       = elem position
     getReachablePositions' = getReachablePositions board
     piecePositions         = getPiecePositions board color
 
