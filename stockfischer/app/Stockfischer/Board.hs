@@ -35,15 +35,14 @@ instance Show Square where
   show (Occupied p) = show p
 
 instance Show Board where
-  show board =
-    intercalate "\n" $
-    "  a b c d e f g h  " :
-    [ show row ++ " "
-      ++ unwords [show $ getSquare board $ Position row col | col <- [1..8]]
-      ++ " " ++ show row
-    | row <- [8,7..1]
-    ]
-    ++ ["  a b c d e f g h  "]
+  show board = intercalate "\n" $ header : rows ++ [header]
+    where
+      header =  "  a b c d e f g h  "
+      rows   = [ show row ++ " "
+                 ++ unwords [show $ getSquare board $ Position row col | col <- [1..8]]
+                 ++ " " ++ show row
+               | row <- [8,7..1]
+               ]
 
 initialBoard :: Board
 initialBoard = Board $ fromList 8 8 squares
