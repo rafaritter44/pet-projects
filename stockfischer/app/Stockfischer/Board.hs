@@ -39,7 +39,7 @@ instance Show Board where
     intercalate "\n" $
     "  a b c d e f g h  " :
     [ show row ++ " "
-      ++ unwords [show (getSquare board (Position row col)) | col <- [1..8]]
+      ++ unwords [show $ getSquare board $ Position row col | col <- [1..8]]
       ++ " " ++ show row
     | row <- [8,7..1]
     ]
