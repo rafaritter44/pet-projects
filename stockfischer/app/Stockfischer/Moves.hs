@@ -116,8 +116,8 @@ getPositionsInDirections = concatMap . getPositionsInDirection
 getPositionsInDirection :: Position -> Offset -> [Position]
 getPositionsInDirection position offset =
   case getRelativePosition position offset of
-    Just nextPosition -> nextPosition : getPositionsInDirection nextPosition offset
-    Nothing           -> []
+    Just next -> next : getPositionsInDirection next offset
+    Nothing   -> []
 
 getPositionsBetween :: Position -> Position -> [Position]
 getPositionsBetween from to
