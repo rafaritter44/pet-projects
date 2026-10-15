@@ -8,7 +8,7 @@ import qualified Data.Map as M
 data PlayerType = Human | Computer
 
 gameLoop :: PlayerType -> PlayerType -> Color -> Board -> IO ()
-gameLoop whitePlayer blackPlayer player board = do
+gameLoop whitePlayerType blackPlayerType player board = do
   case player of
     White -> print board
     Black -> putStrLn $ reverse $ show board
@@ -29,7 +29,7 @@ gameLoop whitePlayer blackPlayer player board = do
   where
     nextLegalBoards   = getNextLegalBoards board player
     nextPlayer        = getNextPlayer player
-    playTurn          = gameLoop whitePlayer blackPlayer
+    playTurn          = gameLoop whitePlayerType blackPlayerType
     playNextTurn      = playTurn nextPlayer
     retryTurn message = do
       putStrLn message
