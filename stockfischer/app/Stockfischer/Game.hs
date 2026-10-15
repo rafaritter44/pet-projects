@@ -27,10 +27,11 @@ gameLoop whitePlayerType blackPlayerType player board = do
             Nothing        -> retryTurn "Illegal move. Try again."
         Nothing -> retryTurn "Invalid input. Example of a valid input: e2e4"
   where
-    nextLegalBoards   = getNextLegalBoards board player
-    nextPlayer        = getNextPlayer player
-    playTurn          = gameLoop whitePlayerType blackPlayerType
-    playNextTurn      = playTurn nextPlayer
-    retryTurn message = do
-      putStrLn message
-      playTurn player board
+    nextLegalBoards     = getNextLegalBoards board player
+    nextPlayer          = getNextPlayer player
+    playTurn            = gameLoop whitePlayerType blackPlayerType
+    playNextTurn        = playTurn nextPlayer
+    retryTurn message   = putStrLn message >> playTurn player board
+    playerType          = getPlayerType player
+    getPlayerType White = whitePlayerType
+    getPlayerType Black = blackPlayerType
