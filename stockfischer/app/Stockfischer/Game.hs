@@ -38,9 +38,7 @@ gameLoop whitePlayerType blackPlayerType player board = do
     playTurn            = gameLoop whitePlayerType blackPlayerType
     playNextTurn        = playTurn nextPlayer
     retryTurn message   = putStrLn message >> playTurn player board
-    playerType          = getPlayerType player
-    getPlayerType White = whitePlayerType
-    getPlayerType Black = blackPlayerType
+    playerType          = case player of White -> whitePlayerType; Black -> blackPlayerType
     selectedPerspective = selectPerspective whitePlayerType blackPlayerType player
 
 selectPerspective :: PlayerType -> PlayerType -> Color -> Color
