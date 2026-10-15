@@ -9,7 +9,7 @@ data PlayerType = Human | Computer
 
 gameLoop :: PlayerType -> PlayerType -> Color -> Board -> IO ()
 gameLoop whitePlayerType blackPlayerType player board = do
-  putStrLn $ case selectedPerspective of
+  putStrLn $ case boardPerspective of
     White -> show board
     Black -> reverse $ show board
   if M.null nextLegalBoards
@@ -33,13 +33,13 @@ gameLoop whitePlayerType blackPlayerType player board = do
                 Nothing        -> retryTurn "Illegal move. Try again."
             Nothing -> retryTurn "Invalid input. Example of a valid input: e2e4"
   where
-    nextLegalBoards     = getNextLegalBoards board player
-    nextPlayer          = getNextPlayer player
-    playTurn            = gameLoop whitePlayerType blackPlayerType
-    playNextTurn        = playTurn nextPlayer
-    retryTurn message   = putStrLn message >> playTurn player board
-    playerType          = case player of White -> whitePlayerType; Black -> blackPlayerType
-    selectedPerspective = selectPerspective whitePlayerType blackPlayerType player
+    nextLegalBoards   = getNextLegalBoards board player
+    nextPlayer        = getNextPlayer player
+    playTurn          = gameLoop whitePlayerType blackPlayerType
+    playNextTurn      = playTurn nextPlayer
+    retryTurn message = putStrLn message >> playTurn player board
+    playerType        = case player of White -> whitePlayerType; Black -> blackPlayerType
+    boardPerspective  = selectPerspective whitePlayerType blackPlayerType player
 
 selectPerspective :: PlayerType -> PlayerType -> Color -> Color
 selectPerspective Human    Human    player = player
