@@ -18,14 +18,20 @@ gameLoop whitePlayerType blackPlayerType player board = do
       else "Stalemate."
     else do
       putStrLn $ show player ++ "'s turn."
-      putStrLn "Enter your move:"
-      input <- readMaybe <$> getLine
-      case input of
-        Just move -> do
-          case M.lookup move nextLegalBoards of
-            Just nextBoard -> playNextTurn nextBoard
-            Nothing        -> retryTurn "Illegal move. Try again."
-        Nothing -> retryTurn "Invalid input. Example of a valid input: e2e4"
+      case playerType of
+        Computer -> do
+          let (move, nextBoard) = head $ M.toList nextLegalBoards
+          putStrLn $ "Computer plays: " ++ show move
+          playNextTurn nextBoard
+        Human -> do
+          putStrLn "Enter your move:"
+          input <- readMaybe <$> getLine
+          case input of
+            Just move -> do
+              case M.lookup move nextLegalBoards of
+                Just nextBoard -> playNextTurn nextBoard
+                Nothing        -> retryTurn "Illegal move. Try again."
+            Nothing -> retryTurn "Invalid input. Example of a valid input: e2e4"
   where
     nextLegalBoards     = getNextLegalBoards board player
     nextPlayer          = getNextPlayer player
