@@ -5,8 +5,10 @@ import Stockfischer.Board
 import Text.Read
 import qualified Data.Map as M
 
-gameLoop :: Board -> Color -> IO ()
-gameLoop board player = do
+data PlayerType = Human | Computer
+
+gameLoop :: PlayerType -> PlayerType -> Color -> Board -> IO ()
+gameLoop whitePlayer blackPlayer player board = do
   case player of
     White -> print board
     Black -> putStrLn $ reverse $ show board
@@ -21,15 +23,14 @@ gameLoop board player = do
       case input of
         Just move -> do
           case M.lookup move nextLegalBoards of
-            Just nextBoard -> gameLoop nextBoard nextPlayer
-            Nothing        -> retryTurn' "Illegal move. Try again."
-        Nothing -> retryTurn' "Invalid input. Example of a valid input: e2e4"
+            Just nextBoard -> playNextTurn nextBoard
+            Nothing        -> retryTurn "Illegal move. Try again."
+        Nothing -> retryTurn "Invalid input. Example of a valid input: e2e4"
   where
-    nextLegalBoards = getNextLegalBoards board player
-    nextPlayer      = getNextPlayer player
-    retryTurn'      = retryTurn board player
-
-retryTurn :: Board -> Color -> String -> IO ()
-retryTurn board player message = do
-  putStrLn message
-  gameLoop board player
+    nextLegalBoards   = getNextLegalBoards board player
+    nextPlayer        = getNextPlayer player
+    playTurn          = gameLoop whitePlayer blackPlayer
+    playNextTurn      = playTurn nextPlayer
+    retryTurn message = do
+      putStrLn message
+      playTurn player board

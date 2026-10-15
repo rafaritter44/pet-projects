@@ -5,4 +5,4 @@ import Stockfischer.Board
 
 main :: IO ()
 main = do
-  gameLoop initialBoard White
+  gameLoop Human Human White initialBoard
