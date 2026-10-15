@@ -9,9 +9,9 @@ data PlayerType = Human | Computer
 
 gameLoop :: PlayerType -> PlayerType -> Color -> Board -> IO ()
 gameLoop whitePlayerType blackPlayerType player board = do
-  case player of
-    White -> print board
-    Black -> putStrLn $ reverse $ show board
+  putStrLn $ case selectedPerspective of
+    White -> show board
+    Black -> reverse $ show board
   if M.null nextLegalBoards
     then putStrLn $ if isInCheck board player
       then "Checkmate. " ++ show nextPlayer ++ " won."
@@ -41,3 +41,10 @@ gameLoop whitePlayerType blackPlayerType player board = do
     playerType          = getPlayerType player
     getPlayerType White = whitePlayerType
     getPlayerType Black = blackPlayerType
+    selectedPerspective = selectPerspective whitePlayerType blackPlayerType player
+
+selectPerspective :: PlayerType -> PlayerType -> Color -> Color
+selectPerspective Human    Human    player = player
+selectPerspective Human    Computer _      = White
+selectPerspective Computer Human    _      = Black
+selectPerspective Computer Computer _      = White
