@@ -97,3 +97,13 @@ getCurrentBoard = head
 getPreviousBoard :: Game -> Maybe Board
 getPreviousBoard (_:board:_) = Just board
 getPreviousBoard _ = Nothing
+
+getCurrentPlayer :: Game -> Color
+getCurrentPlayer game
+  | odd $ length game = White
+  | otherwise         = Black
+
+getNextPlayer :: Game -> Color
+getNextPlayer game = case getCurrentPlayer game of
+  White -> Black
+  Black -> White
