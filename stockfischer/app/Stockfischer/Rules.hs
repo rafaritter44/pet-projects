@@ -4,37 +4,36 @@ import Stockfischer.Board
 import Stockfischer.Moves
 import qualified Data.Map as M
 
-getNextLegalBoards :: Board -> Color -> M.Map Move Board
-getNextLegalBoards board player = M.fromList
+getNextLegalBoards :: Game -> M.Map Move Board
+getNextLegalBoards game = M.fromList
   [ (move, nextBoard)
   | from <- getPiecePositions board player
-  , to   <- getReachablePositions board from
+  , to   <- getReachablePositions game from
   , let move      = Move from to
   , let nextBoard = getNextBoard board move
-  , not $ isInCheck nextBoard player
+  , not $ isInCheck (nextBoard:game) player
   ]
-
-isInCheck :: Board -> Color -> Bool
-isInCheck board player =
-  isPositionReachableByAny board kingPosition nextPlayer
   where
-    kingPosition = getKingPosition board player
+    board  = getCurrentBoard game
+    player = getCurrentPlayer game
+
+isInCheck :: Game -> Color -> Bool
+isInCheck game player =
+  isPositionReachableByAny game kingPosition nextPlayer
+  where
+    kingPosition = getKingPosition (getCurrentBoard game) player
     nextPlayer   = getNextPlayer player
 
-getNextPlayer :: Color -> Color
-getNextPlayer White = Black
-getNextPlayer Black = White
-
-isPositionReachableByAny :: Board -> Position -> Color -> Bool
-isPositionReachableByAny board position color =
+isPositionReachableByAny :: Game -> Position -> Color -> Bool
+isPositionReachableByAny game position color =
   any (containsPosition . getReachablePositions') piecePositions
   where
     containsPosition       = elem position
-    getReachablePositions' = getReachablePositions board
-    piecePositions         = getPiecePositions board color
+    getReachablePositions' = getReachablePositions game
+    piecePositions         = getPiecePositions (getCurrentBoard game) color
 
-getReachablePositions :: Board -> Position -> [Position]
-getReachablePositions board from = filter isReachable candidatePositions
+getReachablePositions :: Game -> Position -> [Position]
+getReachablePositions game from = filter isReachable candidatePositions
   where
     isReachable to = case getSquare' from of
       Empty                     -> False
@@ -67,7 +66,7 @@ getReachablePositions board from = filter isReachable candidatePositions
       Occupied (Piece _ Queen)  -> getPositionsInDirections' adjacentOffsets
       Occupied (Piece _ King)   -> getRelativePositions' adjacentOffsets
 
-    getSquare'                = getSquare board
+    getSquare'                = getSquare $ getCurrentBoard game
     isInitialPosition'        = isInitialPosition from . Occupied
     getRelativePositions'     = getRelativePositions from
     getPositionsInDirections' = getPositionsInDirections from

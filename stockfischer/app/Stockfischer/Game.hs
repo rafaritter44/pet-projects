@@ -8,15 +8,15 @@ import qualified Data.Map as M
 data PlayerType = Human | Computer
 
 startGame :: (PlayerType, PlayerType) -> IO ()
-startGame playerTypes = playGame playerTypes White initialBoard
+startGame = (`playGame` [initialBoard])
 
-playGame :: (PlayerType, PlayerType) -> Color -> Board -> IO ()
-playGame playerTypes@(whitePlayerType, blackPlayerType) player board = do
+playGame :: (PlayerType, PlayerType) -> Game -> IO ()
+playGame playerTypes@(whitePlayerType, blackPlayerType) game = do
   putStrLn $ case boardPerspective of
     White -> show board
     Black -> reverse $ show board
   if M.null nextLegalBoards
-    then putStrLn $ if isInCheck board player
+    then putStrLn $ if isInCheck game player
       then "Checkmate. " ++ show nextPlayer ++ " won."
       else "Stalemate."
     else do
@@ -36,11 +36,13 @@ playGame playerTypes@(whitePlayerType, blackPlayerType) player board = do
                 Nothing        -> retryTurn "Illegal move. Try again."
             Nothing -> retryTurn "Invalid input. Example of a valid input: e2e4"
   where
-    nextLegalBoards   = getNextLegalBoards board player
+    board             = getCurrentBoard game
+    player            = getCurrentPlayer game
+    nextLegalBoards   = getNextLegalBoards game
     nextPlayer        = getNextPlayer player
     playTurn          = playGame playerTypes
-    playNextTurn      = playTurn nextPlayer
-    retryTurn message = putStrLn message >> playTurn player board
+    playNextTurn      = playTurn . (:game)
+    retryTurn message = putStrLn message >> playTurn game
     playerType        = case player of White -> whitePlayerType; Black -> blackPlayerType
     boardPerspective  = selectPerspective whitePlayerType blackPlayerType player
 
