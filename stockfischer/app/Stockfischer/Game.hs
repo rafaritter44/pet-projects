@@ -7,12 +7,11 @@ import qualified Data.Map as M
 
 data PlayerType = Human | Computer
 
-startGame :: PlayerType -> PlayerType -> IO ()
-startGame whitePlayerType blackPlayerType =
-  playGame whitePlayerType blackPlayerType White initialBoard
+startGame :: (PlayerType, PlayerType) -> IO ()
+startGame playerTypes = playGame playerTypes White initialBoard
 
-playGame :: PlayerType -> PlayerType -> Color -> Board -> IO ()
-playGame whitePlayerType blackPlayerType player board = do
+playGame :: (PlayerType, PlayerType) -> Color -> Board -> IO ()
+playGame playerTypes@(whitePlayerType, blackPlayerType) player board = do
   putStrLn $ case boardPerspective of
     White -> show board
     Black -> reverse $ show board
@@ -39,7 +38,7 @@ playGame whitePlayerType blackPlayerType player board = do
   where
     nextLegalBoards   = getNextLegalBoards board player
     nextPlayer        = getNextPlayer player
-    playTurn          = playGame whitePlayerType blackPlayerType
+    playTurn          = playGame playerTypes
     playNextTurn      = playTurn nextPlayer
     retryTurn message = putStrLn message >> playTurn player board
     playerType        = case player of White -> whitePlayerType; Black -> blackPlayerType
