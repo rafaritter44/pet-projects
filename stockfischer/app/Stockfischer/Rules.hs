@@ -4,6 +4,10 @@ import Stockfischer.Board
 import Stockfischer.Moves
 import qualified Data.Map as M
 
+data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | FiftyMoveRule
+data GameResult = Checkmate Color | Draw DrawReason
+data MoveResult = GameOver GameResult | NextTurn Color | IllegalMove
+
 getNextLegalBoards :: Game -> M.Map Move Board
 getNextLegalBoards game = M.fromList
   [ (move, nextBoard)
