@@ -7,6 +7,10 @@ import qualified Data.Map as M
 
 data PlayerType = Human | Computer
 
+startGame :: PlayerType -> PlayerType -> IO ()
+startGame whitePlayerType blackPlayerType =
+  playGame whitePlayerType blackPlayerType White initialBoard
+
 playGame :: PlayerType -> PlayerType -> Color -> Board -> IO ()
 playGame whitePlayerType blackPlayerType player board = do
   putStrLn $ case boardPerspective of
