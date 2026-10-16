@@ -16,6 +16,8 @@ data Square = Empty | Occupied Piece
 
 newtype Board = Board (Matrix Square)
 
+type Game = [Board]
+
 instance Show Piece where
   show (Piece White King)   = "♔"
   show (Piece White Queen)  = "♕"
@@ -88,3 +90,10 @@ getNextBoard :: Board -> Move -> Board
 getNextBoard board (Move from to) = board
   & setSquare from Empty
   & setSquare to (getSquare board from)
+
+getCurrentBoard :: Game -> Board
+getCurrentBoard = head
+
+getPreviousBoard :: Game -> Maybe Board
+getPreviousBoard (_:board:_) = Just board
+getPreviousBoard _ = Nothing
