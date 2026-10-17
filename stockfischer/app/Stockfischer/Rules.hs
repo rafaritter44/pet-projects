@@ -36,18 +36,11 @@ getGameState game
 
 isInCheck :: Game -> Color -> Bool
 isInCheck game player =
-  isPositionReachableByAny game kingPosition nextPlayer
+  any (elem kingPosition . getReachablePositions game) opponentPiecePositions
   where
-    kingPosition = getKingPosition (getCurrentBoard game) player
-    nextPlayer   = getNextPlayer player
-
-isPositionReachableByAny :: Game -> Position -> Color -> Bool
-isPositionReachableByAny game position color =
-  any (containsPosition . getReachablePositions') piecePositions
-  where
-    containsPosition       = elem position
-    getReachablePositions' = getReachablePositions game
-    piecePositions         = getPiecePositions (getCurrentBoard game) color
+    kingPosition           = getKingPosition board player
+    opponentPiecePositions = getPiecePositions board $ getNextPlayer player
+    board                  = getCurrentBoard game
 
 getReachablePositions :: Game -> Position -> [Position]
 getReachablePositions game from = filter isReachable candidatePositions
