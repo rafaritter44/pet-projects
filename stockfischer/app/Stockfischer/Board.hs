@@ -114,3 +114,18 @@ getCurrentPlayer game
 getNextPlayer :: Color -> Color
 getNextPlayer White = Black
 getNextPlayer Black = White
+
+isCapture :: Board -> Board -> Bool
+isCapture previousBoard currentBoard =
+  length (getAllPiecePositions previousBoard) >
+  length (getAllPiecePositions currentBoard)
+
+isPawnMove :: Board -> Board -> Bool
+isPawnMove previousBoard currentBoard =
+  getPawnPositions previousBoard /= getPawnPositions currentBoard
+  where
+    getPawnPositions board =
+      [ position
+      | position <- getAllPiecePositions board
+      , Occupied (Piece _ Pawn) <- [getSquare board position]
+      ]
