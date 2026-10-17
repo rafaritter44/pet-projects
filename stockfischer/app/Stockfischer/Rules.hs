@@ -19,6 +19,7 @@ instance Show DrawReason where
 getGameState :: Game -> GameState
 getGameState game
   | isInsufficientMaterial board = GameOver $ Draw InsufficientMaterial
+  | isThreefoldRepetition game   = GameOver $ Draw ThreefoldRepetition
   | M.null legalMoves = GameOver $ if isInCheck game player
     then Checkmate
     else Draw Stalemate
@@ -96,3 +97,7 @@ isInsufficientMaterial board = case nonKingPieces of
       , Occupied (Piece _ pieceType) <- [getSquare board position]
       , pieceType /= King
       ]
+
+isThreefoldRepetition :: Game -> Bool
+isThreefoldRepetition game =
+  length (filter (== getCurrentBoard game) game) >= 3

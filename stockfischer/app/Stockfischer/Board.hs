@@ -15,6 +15,7 @@ data Square = Empty | Occupied Piece
   deriving (Eq)
 
 newtype Board = Board (Matrix Square)
+  deriving (Eq)
 
 type Game = [Board]
 
