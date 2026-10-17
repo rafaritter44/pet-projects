@@ -79,11 +79,18 @@ getKingPosition board player = head
 
 getPiecePositions :: Board -> Color -> [Position]
 getPiecePositions board player =
+  [ position
+  | position <- getAllPiecePositions board
+  , Occupied (Piece color _) <- [getSquare board position]
+  , color == player
+  ]
+
+getAllPiecePositions :: Board -> [Position]
+getAllPiecePositions board =
   [ Position row col
   | row <- [1..8]
   , col <- [1..8]
-  , Occupied (Piece color _) <- [getSquare board (Position row col)]
-  , color == player
+  , Occupied _ <- [getSquare board (Position row col)]
   ]
 
 getNextBoard :: Board -> Move -> Board

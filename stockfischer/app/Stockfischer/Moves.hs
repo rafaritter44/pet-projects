@@ -143,3 +143,7 @@ getNextCoordinateBetween from to = from + signum (to - from)
 
 isSameColumn :: Position -> Position -> Bool
 isSameColumn (Position _ col1) (Position _ col2) = col1 == col2
+
+isSameSquareColor :: Position -> Position -> Bool
+isSameSquareColor (Position row1 col1) (Position row2 col2) =
+  odd (row1 + col1) == odd (row2 + col2)

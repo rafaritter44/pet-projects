@@ -18,6 +18,7 @@ instance Show DrawReason where
 
 getGameState :: Game -> GameState
 getGameState game
+  | isInsufficientMaterial board = GameOver $ Draw InsufficientMaterial
   | M.null legalMoves = GameOver $ if isInCheck game player
     then Checkmate
     else Draw Stalemate
@@ -80,3 +81,18 @@ getReachablePositions game from = filter isReachable candidatePositions
     isInitialPosition'        = isInitialPosition from . Occupied
     getRelativePositions'     = getRelativePositions from
     getPositionsInDirections' = getPositionsInDirections from
+
+isInsufficientMaterial :: Board -> Bool
+isInsufficientMaterial board = case nonKingPieces of
+  []            -> True
+  [(_, Bishop)] -> True
+  [(_, Knight)] -> True
+  [(position1, Bishop), (position2, Bishop)] -> isSameSquareColor position1 position2
+  _ -> False
+  where
+    nonKingPieces =
+      [ (position, pieceType)
+      | position <- getAllPiecePositions board
+      , Occupied (Piece _ pieceType) <- [getSquare board position]
+      , pieceType /= King
+      ]
