@@ -115,6 +115,11 @@ getNextPlayer :: Color -> Color
 getNextPlayer White = Black
 getNextPlayer Black = White
 
+isCaptureOrPawnMove :: Board -> Board -> Bool
+isCaptureOrPawnMove previousBoard currentBoard =
+  isCapture previousBoard currentBoard ||
+  isPawnMove previousBoard currentBoard
+
 isCapture :: Board -> Board -> Bool
 isCapture previousBoard currentBoard =
   length (getAllPiecePositions previousBoard) >
