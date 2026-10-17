@@ -6,7 +6,7 @@ import qualified Data.Map as M
 
 data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | FiftyMoveRule
 data GameResult = Checkmate Color | Draw DrawReason
-data MoveResult = GameOver GameResult | NextTurn Color | IllegalMove
+data GameState = GameOver GameResult | PlayerTurn Color
 
 getNextLegalBoards :: Game -> M.Map Move Board
 getNextLegalBoards game = M.fromList
