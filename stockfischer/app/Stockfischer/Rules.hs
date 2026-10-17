@@ -4,7 +4,7 @@ import Stockfischer.Board
 import Stockfischer.Moves
 import qualified Data.Map as M
 
-data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | FiftyMoveRule
+data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | FiftyMoveRule
 data GameResult = Checkmate | Draw DrawReason
 data GameState = GameOver GameResult | PlayerTurn LegalMoves
 
