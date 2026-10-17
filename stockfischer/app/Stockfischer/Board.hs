@@ -33,7 +33,7 @@ instance Show Piece where
   show (Piece Black Pawn)   = "♟"
 
 instance Show Square where
-  show Empty        = "."
+  show Empty        = "·"
   show (Occupied p) = show p
 
 instance Show Board where
