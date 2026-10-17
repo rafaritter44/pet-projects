@@ -5,19 +5,32 @@ import Stockfischer.Moves
 import qualified Data.Map as M
 
 data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | FiftyMoveRule
-data GameResult = Checkmate Color | Draw DrawReason
-data GameState = GameOver GameResult | PlayerTurn Color
+data GameResult = Checkmate | Draw DrawReason
+data GameState = GameOver GameResult | PlayerTurn LegalMoves
 
-getNextLegalBoards :: Game -> M.Map Move Board
-getNextLegalBoards game = M.fromList
-  [ (move, nextBoard)
-  | from <- getPiecePositions board player
-  , to   <- getReachablePositions game from
-  , let move      = Move from to
-  , let nextBoard = getNextBoard board move
-  , not $ isInCheck (nextBoard:game) player
-  ]
+type LegalMoves = M.Map Move Board
+
+instance Show DrawReason where
+  show Stalemate            = "Stalemate"
+  show InsufficientMaterial = "Draw by insufficient material"
+  show ThreefoldRepetition  = "Draw by threefold repetition"
+  show FiftyMoveRule        = "Draw by the fifty-move rule"
+
+getGameState :: Game -> GameState
+getGameState game
+  | M.null legalMoves = GameOver $ if isInCheck game player
+    then Checkmate
+    else Draw Stalemate
+  | otherwise = PlayerTurn legalMoves
   where
+    legalMoves = M.fromList
+      [ (move, nextBoard)
+      | from <- getPiecePositions board player
+      , to   <- getReachablePositions game from
+      , let move      = Move from to
+      , let nextBoard = getNextBoard board move
+      , not $ isInCheck (nextBoard:game) player
+      ]
     board  = getCurrentBoard game
     player = getCurrentPlayer game
 

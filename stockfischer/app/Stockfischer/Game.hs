@@ -15,15 +15,15 @@ playGame playerTypes@(whitePlayerType, blackPlayerType) game = do
   putStrLn $ case boardPerspective of
     White -> show board
     Black -> reverse $ show board
-  if M.null nextLegalBoards
-    then putStrLn $ if isInCheck game player
-      then "Checkmate. " ++ show nextPlayer ++ " won."
-      else "Stalemate."
-    else do
+  case getGameState game of
+    GameOver result -> putStrLn $ case result of
+      Checkmate   -> "Checkmate. " ++ show nextPlayer ++ " won."
+      Draw reason -> show reason ++ "."
+    PlayerTurn legalMoves -> do
       putStrLn $ show player ++ "'s turn."
       case playerType of
         Computer -> do
-          let (move, nextBoard) = head $ M.toList nextLegalBoards
+          let (move, nextBoard) = head $ M.toList legalMoves
           putStrLn $ "Computer plays: " ++ show move
           playNextTurn nextBoard
         Human -> do
@@ -31,14 +31,13 @@ playGame playerTypes@(whitePlayerType, blackPlayerType) game = do
           input <- readMaybe <$> getLine
           case input of
             Just move -> do
-              case M.lookup move nextLegalBoards of
+              case M.lookup move legalMoves of
                 Just nextBoard -> playNextTurn nextBoard
                 Nothing        -> retryTurn "Illegal move. Try again."
             Nothing -> retryTurn "Invalid input. Example of a valid input: e2e4"
   where
     board             = getCurrentBoard game
     player            = getCurrentPlayer game
-    nextLegalBoards   = getNextLegalBoards game
     nextPlayer        = getNextPlayer player
     playTurn          = playGame playerTypes
     playNextTurn      = playTurn . (:game)
