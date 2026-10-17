@@ -44,10 +44,10 @@ playGame playerTypes@(whitePlayerType, blackPlayerType) game = do
     playNextTurn      = playTurn . (:game)
     retryTurn message = putStrLn message >> playTurn game
     playerType        = case player of White -> whitePlayerType; Black -> blackPlayerType
-    boardPerspective  = selectPerspective whitePlayerType blackPlayerType player
+    boardPerspective  = getBoardPerspective whitePlayerType blackPlayerType player
 
-selectPerspective :: PlayerType -> PlayerType -> Color -> Color
-selectPerspective Human    Human    player = player
-selectPerspective Human    Computer _      = White
-selectPerspective Computer Human    _      = Black
-selectPerspective Computer Computer _      = White
+getBoardPerspective :: PlayerType -> PlayerType -> Color -> Color
+getBoardPerspective Human    Human    player = player
+getBoardPerspective Human    Computer _      = White
+getBoardPerspective Computer Human    _      = Black
+getBoardPerspective Computer Computer _      = White
