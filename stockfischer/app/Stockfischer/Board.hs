@@ -126,3 +126,13 @@ isCaptureOrPawnMove currentBoard previousBoard =
       | position <- getAllPiecePositions board
       , Occupied (Piece _ Pawn) <- [getSquare board position]
       ]
+
+hasEverMoved :: Game -> Position -> Bool
+hasEverMoved (currentBoard:previousBoard:previousBoards) position =
+  hasMoved currentBoard previousBoard position
+  || hasEverMoved (previousBoard:previousBoards) position
+hasEverMoved _ _ = False
+
+hasMoved :: Board -> Board -> Position -> Bool
+hasMoved currentBoard previousBoard position =
+  getSquare currentBoard position /= getSquare previousBoard position
