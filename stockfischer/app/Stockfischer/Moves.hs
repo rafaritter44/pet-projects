@@ -66,8 +66,8 @@ downRight = Offset (-1) 1
 
 orthogonalOffsets, diagonalOffsets, adjacentOffsets :: [Offset]
 orthogonalOffsets = [up, down, left, right]
-diagonalOffsets = [upLeft, upRight, downLeft, downRight]
-adjacentOffsets = orthogonalOffsets ++ diagonalOffsets
+diagonalOffsets   = [upLeft, upRight, downLeft, downRight]
+adjacentOffsets   = orthogonalOffsets ++ diagonalOffsets
 
 twoUp, twoDown :: Offset
 twoUp   = Offset 2 0
