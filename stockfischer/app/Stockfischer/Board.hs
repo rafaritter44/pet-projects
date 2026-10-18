@@ -116,18 +116,18 @@ getNextPlayer White = Black
 getNextPlayer Black = White
 
 isCaptureOrPawnMove :: Board -> Board -> Bool
-isCaptureOrPawnMove previousBoard currentBoard =
-  isCapture previousBoard currentBoard ||
-  isPawnMove previousBoard currentBoard
+isCaptureOrPawnMove currentBoard previousBoard =
+  isCapture currentBoard previousBoard ||
+  isPawnMove currentBoard previousBoard
 
 isCapture :: Board -> Board -> Bool
-isCapture previousBoard currentBoard =
-  length (getAllPiecePositions previousBoard) >
-  length (getAllPiecePositions currentBoard)
+isCapture currentBoard previousBoard =
+  length (getAllPiecePositions currentBoard) <
+  length (getAllPiecePositions previousBoard)
 
 isPawnMove :: Board -> Board -> Bool
-isPawnMove previousBoard currentBoard =
-  getPawnPositions previousBoard /= getPawnPositions currentBoard
+isPawnMove currentBoard previousBoard =
+  getPawnPositions currentBoard /= getPawnPositions previousBoard
   where
     getPawnPositions board =
       [ position

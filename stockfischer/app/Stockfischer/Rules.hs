@@ -20,6 +20,7 @@ getGameState :: Game -> GameState
 getGameState game
   | isInsufficientMaterial board = GameOver $ Draw InsufficientMaterial
   | isThreefoldRepetition game   = GameOver $ Draw ThreefoldRepetition
+  | isFiftyMoveDraw game         = GameOver $ Draw FiftyMoveRule
   | M.null legalMoves = GameOver $ if isInCheck game player
     then Checkmate
     else Draw Stalemate
@@ -101,3 +102,13 @@ isInsufficientMaterial board = case nonKingPieces of
 isThreefoldRepetition :: Game -> Bool
 isThreefoldRepetition game =
   length (filter (== getCurrentBoard game) game) >= 3
+
+isFiftyMoveDraw :: Game -> Bool
+isFiftyMoveDraw = isFiftyMoveDraw' 0
+  where
+    isFiftyMoveDraw' :: Int -> Game -> Bool
+    isFiftyMoveDraw' count (currentBoard:previousBoard:previousBoards)
+      | isCaptureOrPawnMove currentBoard previousBoard = False
+      | count == 99 = True
+      | otherwise   = isFiftyMoveDraw' (count + 1) (previousBoard:previousBoards)
+    isFiftyMoveDraw' _ _ = False
