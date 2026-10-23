@@ -90,7 +90,8 @@ getReachablePositions game from = filter isReachable candidatePositions
 
 isCastlingLegal :: Game -> Castling -> Bool
 isCastlingLegal game castling@(Castling color _) =
-  not (hasEverMoved' kingPosition)
+  player == color
+  && not (hasEverMoved' kingPosition)
   && not (hasEverMoved' rookPosition)
   && isPathClear board kingPosition rookPosition
   && not (isInCheck game player)
