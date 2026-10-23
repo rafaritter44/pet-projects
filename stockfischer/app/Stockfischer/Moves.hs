@@ -1,7 +1,9 @@
 module Stockfischer.Moves where
 
+import Stockfischer.Players
 import Data.Char
 import Data.Maybe
+import Data.List
 
 type Coordinate = Int
 
@@ -10,6 +12,9 @@ data Position = Position Coordinate Coordinate
 data Move = Move Position Position
   deriving (Eq, Ord)
 data Offset = Offset Int Int
+
+data CastlingSide = Kingside | Queenside
+data Castling = Castling Color CastlingSide
 
 instance Read Position where
   readsPrec _ [file, rank] = do
@@ -73,14 +78,6 @@ twoUp, twoDown :: Offset
 twoUp   = Offset 2 0
 twoDown = Offset (-2) 0
 
-whitePawnOffsets, blackPawnOffsets :: [Offset]
-whitePawnOffsets = [up, upLeft, upRight]
-blackPawnOffsets = [down, downLeft, downRight]
-
-initialWhitePawnOffsets, initialBlackPawnOffsets :: [Offset]
-initialWhitePawnOffsets = twoUp : whitePawnOffsets
-initialBlackPawnOffsets = twoDown : blackPawnOffsets
-
 knightUpLeft, knightUpRight, knightLeftUp, knightRightUp :: Offset
 knightLeftDown, knightRightDown, knightDownLeft, knightDownRight :: Offset
 knightUpLeft    = Offset 2 (-1)
@@ -99,6 +96,61 @@ knightOffsets =
   , knightLeftDown, knightRightDown
   , knightDownLeft, knightDownRight
   ]
+
+getPawnOffsets :: Color -> [Offset]
+getPawnOffsets White = [up, upLeft, upRight]
+getPawnOffsets Black = [down, downLeft, downRight]
+
+getInitialPawnOffsets :: Color -> [Offset]
+getInitialPawnOffsets White = twoUp : getPawnOffsets White
+getInitialPawnOffsets Black = twoDown : getPawnOffsets Black
+
+getKingInitialPosition :: Color -> Position
+getKingInitialPosition White = Position 1 5
+getKingInitialPosition Black = Position 8 5
+
+-- | The position the king must pass through when castling.
+getIntermediateCastlingPosition :: Castling -> Position
+getIntermediateCastlingPosition = getRookCastlingPosition
+
+getIntermediateCastlingMove :: Castling -> Move
+getIntermediateCastlingMove castling@(Castling color _) =
+  Move (getKingInitialPosition color) (getIntermediateCastlingPosition castling)
+
+getRookCastlingMove :: Castling -> Move
+getRookCastlingMove castling =
+  Move (getRookInitialPosition castling) (getRookCastlingPosition castling)
+
+getRookInitialPosition :: Castling -> Position
+getRookInitialPosition (Castling White Kingside)  = Position 1 8
+getRookInitialPosition (Castling White Queenside) = Position 1 1
+getRookInitialPosition (Castling Black Kingside)  = Position 8 8
+getRookInitialPosition (Castling Black Queenside) = Position 8 1
+
+getRookCastlingPosition :: Castling -> Position
+getRookCastlingPosition (Castling White Kingside)  = Position 1 6
+getRookCastlingPosition (Castling White Queenside) = Position 1 4
+getRookCastlingPosition (Castling Black Kingside)  = Position 8 6
+getRookCastlingPosition (Castling Black Queenside) = Position 8 4
+
+getCastlingPositions :: Color -> [Position]
+getCastlingPositions color =
+  [ getCastlingPosition (Castling color side)
+  | side <- [Kingside, Queenside]
+  ]
+
+getCastlingPosition :: Castling -> Position
+getCastlingPosition (Castling White Kingside)  = Position 1 7
+getCastlingPosition (Castling White Queenside) = Position 1 3
+getCastlingPosition (Castling Black Kingside)  = Position 8 7
+getCastlingPosition (Castling Black Queenside) = Position 8 3
+
+getCastling :: Color -> Position -> Position -> Maybe Castling
+getCastling color from to
+  | from /= getKingInitialPosition color = Nothing
+  | otherwise = find ((== to) . getCastlingPosition) castlings
+  where
+    castlings = map (Castling color) [Kingside, Queenside]
 
 getRelativePositions :: Position -> [Offset] -> [Position]
 getRelativePositions = mapMaybe . getRelativePosition

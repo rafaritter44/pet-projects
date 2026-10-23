@@ -1,6 +1,7 @@
 module Main where
 
 import Stockfischer.Game
+import Stockfischer.Players
 
 main :: IO ()
 main = do

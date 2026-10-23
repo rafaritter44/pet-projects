@@ -67,6 +67,7 @@ executable stockfischer
         Stockfischer.Rules
         Stockfischer.Board
         Stockfischer.Moves
+        Stockfischer.Players
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

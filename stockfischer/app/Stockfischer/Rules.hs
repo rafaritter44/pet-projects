@@ -2,6 +2,7 @@ module Stockfischer.Rules where
 
 import Stockfischer.Board
 import Stockfischer.Moves
+import Stockfischer.Players
 import qualified Data.Map as M
 
 data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | FiftyMoveRule
@@ -31,7 +32,7 @@ getGameState game
       | from <- getPiecePositions board player
       , to   <- getReachablePositions game from
       , let move      = Move from to
-      , let nextBoard = getNextBoard board move
+      , let nextBoard = playMove board move
       , not $ isInCheck (nextBoard:game) player
       ]
     board  = getCurrentBoard game
@@ -49,9 +50,12 @@ getReachablePositions :: Game -> Position -> [Position]
 getReachablePositions game from = filter isReachable candidatePositions
   where
     isReachable to = case getSquare' from of
-      Empty                     -> False
+      Empty -> False
+      Occupied (Piece color King)
+        | Just castling <- getCastling color from to -> isCastlingLegal game castling
+        | otherwise                                  -> isAvailable to
       Occupied (Piece _ Knight) -> isAvailable to
-      Occupied (Piece _ _)      -> isAvailable to && isPathClear to
+      Occupied (Piece _ _)      -> isAvailable to && isPathClear' to
 
     isAvailable to = case (getSquare' from, getSquare' to) of
       (Occupied (Piece _ Pawn), Empty) -> isSameColumn from to
@@ -62,27 +66,42 @@ getReachablePositions game from = filter isReachable candidatePositions
         fromColor /= toColor
       _ -> False
 
-    isPathClear to = all ((== Empty) . getSquare') $ getPositionsBetween from to
-
     -- The positions a piece could move to on all possible boards.
     candidatePositions = case getSquare' from of
       Empty -> []
-      Occupied piece@(Piece White Pawn)
-        | isInitialPosition' piece -> getRelativePositions' initialWhitePawnOffsets
-        | otherwise                -> getRelativePositions' whitePawnOffsets
-      Occupied piece@(Piece Black Pawn)
-        | isInitialPosition' piece -> getRelativePositions' initialBlackPawnOffsets
-        | otherwise                -> getRelativePositions' blackPawnOffsets
+      Occupied piece@(Piece color Pawn)
+        | isInitialPosition' piece -> getRelativePositions' $ getInitialPawnOffsets color
+        | otherwise                -> getRelativePositions' $ getPawnOffsets color
+      Occupied piece@(Piece color King)
+        | isInitialPosition' piece -> adjacentPositions ++ getCastlingPositions color
+        | otherwise                -> adjacentPositions
       Occupied (Piece _ Knight) -> getRelativePositions' knightOffsets
       Occupied (Piece _ Bishop) -> getPositionsInDirections' diagonalOffsets
       Occupied (Piece _ Rook)   -> getPositionsInDirections' orthogonalOffsets
       Occupied (Piece _ Queen)  -> getPositionsInDirections' adjacentOffsets
-      Occupied (Piece _ King)   -> getRelativePositions' adjacentOffsets
 
-    getSquare'                = getSquare $ getCurrentBoard game
+    board                     = getCurrentBoard game
+    getSquare'                = getSquare board
+    isPathClear'              = isPathClear board from
     isInitialPosition'        = isInitialPosition from . Occupied
     getRelativePositions'     = getRelativePositions from
     getPositionsInDirections' = getPositionsInDirections from
+    adjacentPositions         = getRelativePositions' adjacentOffsets
+
+isCastlingLegal :: Game -> Castling -> Bool
+isCastlingLegal game castling@(Castling color _) =
+  not (hasEverMoved' kingPosition)
+  && not (hasEverMoved' rookPosition)
+  && isPathClear board kingPosition rookPosition
+  && not (isInCheck game player)
+  && not (isInCheck (intermediateBoard:game) player)
+  where
+    board             = getCurrentBoard game
+    player            = getCurrentPlayer game
+    hasEverMoved'     = hasEverMoved game
+    kingPosition      = getKingInitialPosition color
+    rookPosition      = getRookInitialPosition castling
+    intermediateBoard = movePiece (getIntermediateCastlingMove castling) board
 
 isInsufficientMaterial :: Board -> Bool
 isInsufficientMaterial board = case nonKingPieces of

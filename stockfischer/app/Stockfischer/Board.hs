@@ -1,12 +1,11 @@
 module Stockfischer.Board where
 
 import Stockfischer.Moves
+import Stockfischer.Players
 import Data.Matrix
 import Data.List
 import Data.Function
 
-data Color = White | Black
-  deriving (Eq, Show)
 data PieceType = Pawn | Knight | Bishop | Rook | Queen | King
   deriving (Eq)
 data Piece = Piece Color PieceType
@@ -94,8 +93,20 @@ getAllPiecePositions board =
   , Occupied _ <- [getSquare board (Position row col)]
   ]
 
-getNextBoard :: Board -> Move -> Board
-getNextBoard board (Move from to) = board
+isPathClear :: Board -> Position -> Position -> Bool
+isPathClear board from to =
+  all ((== Empty) . getSquare board) $ getPositionsBetween from to
+
+playMove :: Board -> Move -> Board
+playMove board move@(Move from to) = case getSquare board from of
+  Occupied (Piece color King)
+    | Just castling <- getCastling color from to -> board
+      & movePiece move
+      & movePiece (getRookCastlingMove castling)
+  _ -> movePiece move board
+
+movePiece :: Move -> Board -> Board
+movePiece (Move from to) board = board
   & setSquare from Empty
   & setSquare to (getSquare board from)
 
@@ -110,10 +121,6 @@ getCurrentPlayer :: Game -> Color
 getCurrentPlayer game
   | odd $ length game = White
   | otherwise         = Black
-
-getNextPlayer :: Color -> Color
-getNextPlayer White = Black
-getNextPlayer Black = White
 
 isCaptureOrPawnMove :: Board -> Board -> Bool
 isCaptureOrPawnMove currentBoard previousBoard =

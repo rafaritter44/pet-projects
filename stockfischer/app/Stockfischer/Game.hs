@@ -2,17 +2,16 @@ module Stockfischer.Game where
 
 import Stockfischer.Rules
 import Stockfischer.Board
+import Stockfischer.Players
 import Text.Read
 import qualified Data.Map as M
 
-data PlayerType = Human | Computer
-
-startGame :: (PlayerType, PlayerType) -> IO ()
+startGame :: PlayerTypes -> IO ()
 startGame = (`playGame` [initialBoard])
 
-playGame :: (PlayerType, PlayerType) -> Game -> IO ()
-playGame playerTypes@(whitePlayerType, blackPlayerType) game = do
-  putStrLn $ case boardPerspective of
+playGame :: PlayerTypes -> Game -> IO ()
+playGame playerTypes game = do
+  putStrLn $ case getBoardPerspective playerTypes player of
     White -> show board
     Black -> reverse $ show board
   case getGameState game of
@@ -21,7 +20,7 @@ playGame playerTypes@(whitePlayerType, blackPlayerType) game = do
       Draw reason -> show reason ++ "."
     PlayerTurn legalMoves -> do
       putStrLn $ show player ++ "'s turn."
-      case playerType of
+      case getPlayerType player playerTypes of
         Computer -> do
           let (move, nextBoard) = head $ M.toList legalMoves
           putStrLn $ "Computer plays: " ++ show move
@@ -42,11 +41,3 @@ playGame playerTypes@(whitePlayerType, blackPlayerType) game = do
     playTurn          = playGame playerTypes
     playNextTurn      = playTurn . (:game)
     retryTurn message = putStrLn message >> playTurn game
-    playerType        = case player of White -> whitePlayerType; Black -> blackPlayerType
-    boardPerspective  = getBoardPerspective playerTypes player
-
-getBoardPerspective :: (PlayerType, PlayerType) -> Color -> Color
-getBoardPerspective (Human   , Human)    player = player
-getBoardPerspective (Human   , Computer) _      = White
-getBoardPerspective (Computer, Human)    _      = Black
-getBoardPerspective (Computer, Computer) _      = White
