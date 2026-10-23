@@ -7,14 +7,25 @@ import Data.List
 
 type Coordinate = Int
 
+data PromotionPiece = Queen | Rook | Bishop | Knight
+  deriving (Eq, Ord)
 data Position = Position Coordinate Coordinate
   deriving (Eq, Ord)
-data Move = Move Position Position
+data Move = Move Position Position | Promotion Position Position PromotionPiece
   deriving (Eq, Ord)
 data Offset = Offset Int Int
 
 data CastlingSide = Kingside | Queenside
 data Castling = Castling Color CastlingSide
+
+instance Read PromotionPiece where
+  readsPrec _ [piece] = case toLower piece of
+    'q' -> [(Queen , "")]
+    'r' -> [(Rook  , "")]
+    'b' -> [(Bishop, "")]
+    'n' -> [(Knight, "")]
+    _   -> []
+  readsPrec _ _ = []
 
 instance Read Position where
   readsPrec _ [file, rank] = do
@@ -44,9 +55,20 @@ instance Read Position where
 instance Read Move where
   readsPrec _ [fromFile, fromRank, toFile, toRank] = do
     (from, _) <- reads [fromFile, fromRank]
-    (to, _)   <- reads [toFile, toRank]
+    (to  , _) <- reads [toFile  , toRank]
     return (Move from to, "")
+  readsPrec _ [fromFile, fromRank, toFile, toRank, pieceChar] = do
+    (from , _) <- reads [fromFile, fromRank]
+    (to   , _) <- reads [toFile  , toRank]
+    (piece, _) <- reads [pieceChar]
+    return (Promotion from to piece, "")
   readsPrec _ _ = []
+
+instance Show PromotionPiece where
+  show Queen  = "q"
+  show Rook   = "r"
+  show Bishop = "b"
+  show Knight = "n"
 
 instance Show Position where
   show (Position row col) = [file, rank]
@@ -55,7 +77,8 @@ instance Show Position where
       rank = "12345678" !! (row - 1)
 
 instance Show Move where
-  show (Move from to) = show from ++ show to
+  show (Move from to)            = show from ++ show to
+  show (Promotion from to piece) = show from ++ show to ++ show piece
 
 up, down, left, right :: Offset
 up    = Offset 1 0

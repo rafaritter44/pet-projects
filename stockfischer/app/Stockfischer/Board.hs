@@ -1,6 +1,6 @@
 module Stockfischer.Board where
 
-import Stockfischer.Moves
+import Stockfischer.Moves hiding (Queen, Rook, Bishop, Knight)
 import Stockfischer.Players
 import Data.Matrix
 import Data.List

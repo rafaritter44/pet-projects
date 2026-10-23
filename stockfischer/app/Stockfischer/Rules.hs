@@ -1,7 +1,7 @@
 module Stockfischer.Rules where
 
 import Stockfischer.Board
-import Stockfischer.Moves
+import Stockfischer.Moves hiding (Queen, Rook, Bishop, Knight)
 import Stockfischer.Players
 import qualified Data.Map as M
 
