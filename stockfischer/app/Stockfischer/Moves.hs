@@ -216,6 +216,9 @@ getNextPositionBetween (Position fromRow fromCol) (Position toRow toCol) =
 getNextCoordinateBetween :: Coordinate -> Coordinate -> Coordinate
 getNextCoordinateBetween from to = from + signum (to - from)
 
+isPromotionRow :: Position -> Bool
+isPromotionRow (Position row _) = row `elem` [1, 8]
+
 isSameColumn :: Position -> Position -> Bool
 isSameColumn (Position _ col1) (Position _ col2) = col1 == col2
 
