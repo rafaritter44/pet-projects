@@ -31,7 +31,7 @@ getGameState game
       [ (move, nextBoard)
       | from <- getPiecePositions board player
       , to   <- getReachablePositions game from
-      , let move      = Move from to
+      , move <- getMoves from to
       , let nextBoard = playMove board move
       , not $ isInCheck (nextBoard:game) player
       ]
