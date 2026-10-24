@@ -102,7 +102,7 @@ isCastlingLegal game castling@(Castling color _) =
     hasEverMoved'     = hasEverMoved game
     kingPosition      = getKingInitialPosition color
     rookPosition      = getRookInitialPosition castling
-    intermediateBoard = movePiece (getIntermediateCastlingMove castling) board
+    intermediateBoard = playMove board $ getIntermediateCastlingMove castling
 
 isInsufficientMaterial :: Board -> Bool
 isInsufficientMaterial board = case nonKingPieces of
