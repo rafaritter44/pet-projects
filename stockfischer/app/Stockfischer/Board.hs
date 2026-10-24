@@ -1,5 +1,6 @@
 module Stockfischer.Board where
 
+import qualified Stockfischer.Moves as M
 import Stockfischer.Moves hiding (Queen, Rook, Bishop, Knight)
 import Stockfischer.Players
 import Data.Matrix
@@ -104,11 +105,23 @@ playMove board move@(Move from to) = case getSquare board from of
       & movePiece move
       & movePiece (getRookCastlingMove castling)
   _ -> movePiece move board
+playMove board move@(Promotion {}) = movePiece move board
 
 movePiece :: Move -> Board -> Board
 movePiece (Move from to) board = board
   & setSquare from Empty
   & setSquare to (getSquare board from)
+movePiece (Promotion from to piece) board = case getSquare board from of
+  Occupied (Piece color Pawn) -> board
+    & setSquare from Empty
+    & setSquare to (Occupied $ Piece color $ getPromotionPiece piece)
+  _ -> board
+
+getPromotionPiece :: M.PromotionPiece -> PieceType
+getPromotionPiece M.Queen  = Queen
+getPromotionPiece M.Rook   = Rook
+getPromotionPiece M.Bishop = Bishop
+getPromotionPiece M.Knight = Knight
 
 getCurrentBoard :: Game -> Board
 getCurrentBoard = head
