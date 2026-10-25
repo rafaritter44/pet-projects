@@ -55,7 +55,7 @@ getReachablePositions game from = filter isReachable candidatePositions
         | Just castling <- getCastling color from to -> isCastlingLegal game castling
         | otherwise                                  -> isAvailable to
       Occupied (Piece _ Knight) -> isAvailable to
-      Occupied (Piece _ _)      -> isAvailable to && isPathClear' to
+      Occupied (Piece _ _)      -> isAvailable to && isPathClear board from to
 
     isAvailable to = case (getSquare' from, getSquare' to) of
       (Occupied (Piece _ Pawn), Empty) -> isSameColumn from to
@@ -82,7 +82,6 @@ getReachablePositions game from = filter isReachable candidatePositions
 
     board                     = getCurrentBoard game
     getSquare'                = getSquare board
-    isPathClear'              = isPathClear board from
     isInitialPosition'        = isInitialPosition from . Occupied
     getRelativePositions'     = getRelativePositions from
     getPositionsInDirections' = getPositionsInDirections from
