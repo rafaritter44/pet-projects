@@ -103,7 +103,8 @@ getPossibleMoves board from to = case getSquare board from of
   Occupied (Piece _ Pawn)
     | isPromotionRow to ->
       map (Promotion from to) [M.Queen, M.Rook, M.Bishop, M.Knight]
-  _ -> [Move from to]
+  Occupied _ -> [Move from to]
+  Empty      -> []
 
 playMove :: Board -> Move -> Board
 playMove board move@(Move from to) = case getSquare board from of
