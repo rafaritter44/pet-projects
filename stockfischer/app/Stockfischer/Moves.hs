@@ -175,6 +175,17 @@ getCastling color from to
   where
     castlings = map (Castling color) [Kingside, Queenside]
 
+-- | The move that reverts the opponent pawn's two-square advance
+-- | to a one-square advance.
+getEnPassantOpponentMove :: Position -> Position -> Move
+getEnPassantOpponentMove from to =
+  Move (getEnPassantOpponentPosition from to) to
+
+-- | The position of the opponent pawn in an en passant capture.
+getEnPassantOpponentPosition :: Position -> Position -> Position
+getEnPassantOpponentPosition (Position fromRow _) (Position _ toCol) =
+  Position fromRow toCol
+
 getRelativePositions :: Position -> [Offset] -> [Position]
 getRelativePositions = mapMaybe . getRelativePosition
 

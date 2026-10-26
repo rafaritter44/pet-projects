@@ -107,13 +107,21 @@ getMoveOrPromotions board from to = case getSquare board from of
   Empty      -> []
 
 playMove :: Board -> Move -> Board
-playMove board move@(Move from to) = case getSquare board from of
-  Occupied (Piece color King)
+playMove board move@(Move from to) = case (getSquare' from, getSquare' to) of
+  -- Castling
+  (Occupied (Piece color King), Empty)
     | Just castling <- getCastling color from to -> board
       & movePiece move
       & movePiece (getRookCastlingMove castling)
-  Occupied _ -> movePiece move board
-  Empty      -> board
+  -- En passant
+  (Occupied (Piece color Pawn), Empty)
+    | not $ isSameColumn from to -> board
+      & movePiece (getEnPassantOpponentMove from to)
+      & movePiece move
+  (Occupied _, _) -> movePiece move board
+  (Empty     , _) -> board
+  where
+    getSquare' = getSquare board
 playMove board move@(Promotion {}) = movePiece move board
 
 movePiece :: Move -> Board -> Board
