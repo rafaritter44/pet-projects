@@ -112,7 +112,8 @@ playMove board move@(Move from to) = case getSquare board from of
     | Just castling <- getCastling color from to -> board
       & movePiece move
       & movePiece (getRookCastlingMove castling)
-  _ -> movePiece move board
+  Occupied _ -> movePiece move board
+  Empty      -> board
 playMove board move@(Promotion {}) = movePiece move board
 
 movePiece :: Move -> Board -> Board
