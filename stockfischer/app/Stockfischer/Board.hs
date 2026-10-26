@@ -98,8 +98,8 @@ isPathClear :: Board -> Position -> Position -> Bool
 isPathClear board from to =
   all ((== Empty) . getSquare board) $ getPositionsBetween from to
 
-getPossibleMoves :: Board -> Position -> Position -> [Move]
-getPossibleMoves board from to = case getSquare board from of
+getMoveOrPromotions :: Board -> Position -> Position -> [Move]
+getMoveOrPromotions board from to = case getSquare board from of
   Occupied (Piece _ Pawn)
     | isPromotionRow to ->
       map (Promotion from to) [M.Queen, M.Rook, M.Bishop, M.Knight]
