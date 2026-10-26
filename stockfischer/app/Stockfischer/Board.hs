@@ -114,7 +114,7 @@ playMove board move@(Move from to) = case (getSquare' from, getSquare' to) of
       & movePiece move
       & movePiece (getRookCastlingMove castling)
   -- En passant
-  (Occupied (Piece color Pawn), Empty)
+  (Occupied (Piece _ Pawn), Empty)
     | not $ isSameColumn from to -> board
       & movePiece (getEnPassantOpponentMove from to)
       & movePiece move
