@@ -58,7 +58,8 @@ getReachablePositions game from = filter isReachable candidatePositions
       Occupied (Piece _ _)      -> isAvailable to && isPathClear board from to
 
     isAvailable to = case (getSquare' from, getSquare' to) of
-      (Occupied (Piece _ Pawn), Empty) -> isSameColumn from to
+      (Occupied (Piece _ Pawn), Empty) ->
+        isSameColumn from to || isEnPassantLegal game from to
       (Occupied _             , Empty) -> True
       (Occupied (Piece fromColor Pawn), Occupied (Piece toColor _)) ->
         fromColor /= toColor && not (isSameColumn from to)
@@ -70,7 +71,7 @@ getReachablePositions game from = filter isReachable candidatePositions
     candidatePositions = case getSquare' from of
       Empty -> []
       Occupied piece@(Piece color Pawn)
-        | isInitialPosition' piece -> getRelativePositions' $ getInitialPawnOffsets color
+        | isInitialPosition' piece -> getRelativePositions' $ getPawnInitialOffsets color
         | otherwise                -> getRelativePositions' $ getPawnOffsets color
       Occupied piece@(Piece color King)
         | isInitialPosition' piece -> adjacentPositions ++ getCastlingPositions color
@@ -102,6 +103,21 @@ isCastlingLegal game castling@(Castling color _) =
     kingPosition      = getKingInitialPosition color
     rookPosition      = getRookInitialPosition castling
     intermediateBoard = playMove board $ getIntermediateCastlingMove castling
+
+isEnPassantLegal :: Game -> Position -> Position -> Bool
+isEnPassantLegal game from to
+  | Just previousBoard <- getPreviousBoard game =
+      getSquare previousBoard opponentPawnInitialPosition   == Occupied (Piece opponent Pawn)
+      && getSquare previousBoard opponentPawnPosition       == Empty
+      && getSquare currentBoard opponentPawnInitialPosition == Empty
+      && getSquare currentBoard opponentPawnPosition        == Occupied (Piece opponent Pawn)
+  | otherwise = False
+  where
+    currentBoard                = getCurrentBoard game
+    opponent                    = getNextPlayer $ getCurrentPlayer game
+    opponentPawnPosition        = getEnPassantOpponentPosition from to
+    opponentPawnColumn          = getColumn opponentPawnPosition
+    opponentPawnInitialPosition = getPawnInitialPosition opponent opponentPawnColumn
 
 isInsufficientMaterial :: Board -> Bool
 isInsufficientMaterial board = case nonKingPieces of

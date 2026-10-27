@@ -124,9 +124,16 @@ getPawnOffsets :: Color -> [Offset]
 getPawnOffsets White = [up, upLeft, upRight]
 getPawnOffsets Black = [down, downLeft, downRight]
 
-getInitialPawnOffsets :: Color -> [Offset]
-getInitialPawnOffsets White = twoUp : getPawnOffsets White
-getInitialPawnOffsets Black = twoDown : getPawnOffsets Black
+getPawnInitialOffsets :: Color -> [Offset]
+getPawnInitialOffsets White = twoUp : getPawnOffsets White
+getPawnInitialOffsets Black = twoDown : getPawnOffsets Black
+
+getPawnInitialRow :: Color -> Coordinate
+getPawnInitialRow White = 2
+getPawnInitialRow Black = 7
+
+getPawnInitialPosition :: Color -> Coordinate -> Position
+getPawnInitialPosition = Position . getPawnInitialRow
 
 getKingInitialPosition :: Color -> Position
 getKingInitialPosition White = Position 1 5
@@ -226,6 +233,9 @@ getNextPositionBetween (Position fromRow fromCol) (Position toRow toCol) =
 
 getNextCoordinateBetween :: Coordinate -> Coordinate -> Coordinate
 getNextCoordinateBetween from to = from + signum (to - from)
+
+getColumn :: Position -> Coordinate
+getColumn (Position _ col) = col
 
 isPromotionRow :: Position -> Bool
 isPromotionRow (Position row _) = row `elem` [1, 8]
