@@ -9,6 +9,7 @@ data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | Fifty
 data GameResult = Checkmate | Draw DrawReason
 data GameState = GameOver GameResult | PlayerTurn LegalMoves
 
+type LegalMove = (Move, Board)
 type LegalMoves = M.Map Move Board
 
 instance Show DrawReason where

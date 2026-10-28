@@ -1,5 +1,6 @@
 module Stockfischer.Game where
 
+import Stockfischer.AI
 import Stockfischer.Rules
 import Stockfischer.Board
 import Stockfischer.Players
@@ -22,7 +23,7 @@ playGame playerTypes game = do
       putStrLn $ show player ++ "'s turn."
       case getPlayerType player playerTypes of
         Computer -> do
-          let (move, nextBoard) = head $ M.toList legalMoves
+          let (move, nextBoard) = getBestMove legalMoves
           putStrLn $ "Computer plays: " ++ show move
           playNextTurn nextBoard
         Human -> do
