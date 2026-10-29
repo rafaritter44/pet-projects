@@ -23,7 +23,7 @@ playGame playerTypes game = do
       putStrLn $ show player ++ "'s turn."
       case getPlayerType player playerTypes of
         Computer -> do
-          let (move, nextBoard) = getBestMove legalMoves
+          let (move, nextBoard) = chooseMove legalMoves
           putStrLn $ "Computer plays: " ++ show move
           playNextTurn nextBoard
         Human -> do
