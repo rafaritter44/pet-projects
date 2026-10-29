@@ -8,6 +8,10 @@ import qualified Data.Map as M
 chooseMove :: LegalMoves -> LegalMove
 chooseMove = head . M.toList
 
+evaluateBoard :: Board -> Double
+evaluateBoard board =
+  getMaterialValue board White - getMaterialValue board Black
+
 getMaterialValue :: Board -> Color -> Double
 getMaterialValue board player =
   sum $ map getPieceValue $ getPieceTypes board player
