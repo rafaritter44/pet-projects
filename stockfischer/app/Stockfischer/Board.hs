@@ -94,6 +94,13 @@ getAllPiecePositions board =
   , Occupied _ <- [getSquare board (Position row col)]
   ]
 
+getPieceTypes :: Board -> Color -> [PieceType]
+getPieceTypes board player =
+  [ pieceType
+  | position <- getPiecePositions board player
+  , Occupied (Piece _ pieceType) <- [getSquare board position]
+  ]
+
 isPathClear :: Board -> Position -> Position -> Bool
 isPathClear board from to =
   all ((== Empty) . getSquare board) $ getPositionsBetween from to

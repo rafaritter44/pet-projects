@@ -2,10 +2,15 @@ module Stockfischer.AI where
 
 import Stockfischer.Rules
 import Stockfischer.Board
+import Stockfischer.Players
 import qualified Data.Map as M
 
 chooseMove :: LegalMoves -> LegalMove
 chooseMove = head . M.toList
+
+getMaterialValue :: Board -> Color -> Double
+getMaterialValue board player =
+  sum $ map getPieceValue $ getPieceTypes board player
 
 getPieceValue :: PieceType -> Double
 getPieceValue Pawn   = 1
