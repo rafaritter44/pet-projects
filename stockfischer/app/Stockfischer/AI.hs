@@ -8,9 +8,23 @@ import qualified Data.Map as M
 chooseMove :: LegalMoves -> LegalMove
 chooseMove = head . M.toList
 
-evaluateBoard :: Board -> Double
-evaluateBoard board =
-  getMaterialValue board White - getMaterialValue board Black
+negamax :: Int -> Game -> Double
+negamax depth game = case getGameState game of
+  GameOver (Draw _)  -> 0
+  GameOver Checkmate -> (-1) / 0
+  PlayerTurn legalMoves
+    | depth <= 0 -> evaluateGame game
+    | otherwise  -> maximum
+      [ negate $ negamax (depth - 1) (board:game)
+      | board <- M.elems legalMoves
+      ]
+
+evaluateGame :: Game -> Double
+evaluateGame game =
+  getMaterialValue board player - getMaterialValue board (getNextPlayer player)
+  where
+    board  = getCurrentBoard game
+    player = getCurrentPlayer game
 
 getMaterialValue :: Board -> Color -> Double
 getMaterialValue board player =
