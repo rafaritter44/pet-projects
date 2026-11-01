@@ -1,3 +1,3 @@
-# Stockfischer (WIP)
+# Stockfischer
 
 A chess CLI with an alpha-beta pruning engine.
