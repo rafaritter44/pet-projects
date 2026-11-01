@@ -10,21 +10,24 @@ import qualified Data.Map as M
 searchDepth :: Int
 searchDepth = 2
 
+infinity :: Double
+infinity = 1 / 0
+
 chooseMove :: Game -> LegalMoves -> LegalMove
 chooseMove game legalMoves =
   fst $ maximumBy (comparing snd)
-    [ ((move, board), negate $ negamax searchDepth (board:game))
+    [ ((move, board), - negamax searchDepth (board:game))
     | (move, board) <- M.toList legalMoves
     ]
 
 negamax :: Int -> Game -> Double
 negamax depth game = case getGameState game of
   GameOver (Draw _)  -> 0
-  GameOver Checkmate -> (-1) / 0
+  GameOver Checkmate -> - infinity
   PlayerTurn legalMoves
     | depth <= 0 -> evaluateGame game
     | otherwise  -> maximum
-      [ negate $ negamax (depth - 1) (board:game)
+      [ - negamax (depth - 1) (board:game)
       | board <- M.elems legalMoves
       ]
 
