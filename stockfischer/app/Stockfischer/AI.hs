@@ -3,10 +3,16 @@ module Stockfischer.AI where
 import Stockfischer.Rules
 import Stockfischer.Board
 import Stockfischer.Players
+import Data.List
+import Data.Ord
 import qualified Data.Map as M
 
-chooseMove :: LegalMoves -> LegalMove
-chooseMove = head . M.toList
+chooseMove :: Game -> LegalMoves -> LegalMove
+chooseMove game legalMoves =
+  fst $ maximumBy (comparing snd)
+    [ ((move, board), negate $ negamax 1 (board:game))
+    | (move, board) <- M.toList legalMoves
+    ]
 
 negamax :: Int -> Game -> Double
 negamax depth game = case getGameState game of
