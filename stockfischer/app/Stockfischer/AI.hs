@@ -16,20 +16,24 @@ infinity = 1 / 0
 chooseMove :: Game -> LegalMoves -> LegalMove
 chooseMove game legalMoves =
   fst $ maximumBy (comparing snd)
-    [ ((move, board), - negamax searchDepth (board:game))
+    [ ((move, board), - negamax searchDepth (- infinity) infinity (board:game))
     | (move, board) <- M.toList legalMoves
     ]
 
-negamax :: Int -> Game -> Double
-negamax depth game = case getGameState game of
+negamax :: Int -> Double -> Double -> Game -> Double
+negamax depth alpha beta game = case getGameState game of
   GameOver (Draw _)  -> 0
   GameOver Checkmate -> - infinity
   PlayerTurn legalMoves
     | depth <= 0 -> evaluateGame game
-    | otherwise  -> maximum
-      [ - negamax (depth - 1) (board:game)
-      | board <- M.elems legalMoves
-      ]
+    | otherwise  -> search alpha $ M.elems legalMoves
+  where
+    search a [] = a
+    search a (board:boards)
+      | a >= beta = a
+      | otherwise = search (max a score) boards
+      where
+        score = - negamax (depth - 1) (- beta) (- a) (board:game)
 
 evaluateGame :: Game -> Double
 evaluateGame game =
