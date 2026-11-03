@@ -56,9 +56,7 @@ getTotalValue board player =
 
 getDevelopmentValue :: Board -> Color -> Double
 getDevelopmentValue board player =
-  getPieceDevelopmentValue board player
-  + getCastlingRightsValue board player
-  + getCastlingValue board player
+  getPieceDevelopmentValue board player + getCastlingValue board player
 
 getPieceDevelopmentValue :: Board -> Color -> Double
 getPieceDevelopmentValue board player = pieceDevelopmentValue * fromIntegral (length
@@ -68,6 +66,11 @@ getPieceDevelopmentValue board player = pieceDevelopmentValue * fromIntegral (le
   , not $ isInitialPosition position $ getSquare board position
   ])
 
+getCastlingValue :: Board -> Color -> Double
+getCastlingValue board player
+ | getKingPosition board player `elem` getCastlingPositions player = castlingValue
+ | otherwise = getCastlingRightsValue board player
+
 getCastlingRightsValue :: Board -> Color -> Double
 getCastlingRightsValue board player = castlingRightsValue * fromIntegral (length
   [ position
@@ -75,11 +78,6 @@ getCastlingRightsValue board player = castlingRightsValue * fromIntegral (length
   , position  <- getPieceTypePositions board player pieceType
   , isInitialPosition position $ getSquare board position
   ])
-
-getCastlingValue :: Board -> Color -> Double
-getCastlingValue board player
- | getKingPosition board player `elem` getCastlingPositions player = castlingValue
- | otherwise = 0
 
 getMaterialValue :: Board -> Color -> Double
 getMaterialValue board player =
