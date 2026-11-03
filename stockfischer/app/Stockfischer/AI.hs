@@ -63,7 +63,7 @@ getPieceDevelopmentValue board player = pieceDevelopmentValue * fromIntegral (le
   [ position
   | pieceType <- [Knight, Bishop]
   , position  <- getPieceTypePositions board player pieceType
-  , not $ isInitialPosition position $ getSquare board position
+  , not $ isInitialPosition position $ Occupied $ Piece player pieceType
   ])
 
 getCastlingValue :: Board -> Color -> Double
