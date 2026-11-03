@@ -9,7 +9,7 @@ import Data.Ord
 import qualified Data.Map as M
 
 searchDepth :: Int
-searchDepth = 2
+searchDepth = 3
 
 infinity :: Double
 infinity = 1 / 0
