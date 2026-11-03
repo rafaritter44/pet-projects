@@ -14,9 +14,9 @@ searchDepth = 3
 infinity :: Double
 infinity = 1 / 0
 
-pieceDevelopmentValue, castlingRightsValue, castlingValue :: Double
+pieceDevelopmentValue, castlingRightValue, castlingValue :: Double
 pieceDevelopmentValue = 0.1
-castlingRightsValue = 0.05
+castlingRightValue = 0.05
 castlingValue = 0.5
 
 chooseMove :: Game -> LegalMoves -> LegalMove
@@ -72,11 +72,11 @@ getCastlingValue board player
  | otherwise = getCastlingRightsValue board player
 
 getCastlingRightsValue :: Board -> Color -> Double
-getCastlingRightsValue board player = castlingRightsValue * fromIntegral (length
-  [ position
-  | pieceType <- [King, Rook]
-  , position  <- getPieceTypePositions board player pieceType
-  , isInitialPosition position $ getSquare board position
+getCastlingRightsValue board player = castlingRightValue * fromIntegral (length
+  [ rookPosition
+  | rookPosition <- getPieceTypePositions board player Rook
+  , isInitialPosition rookPosition $ Occupied $ Piece player Rook
+  , getKingPosition board player == getKingInitialPosition player
   ])
 
 getMaterialValue :: Board -> Color -> Double
