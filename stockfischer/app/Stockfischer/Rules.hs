@@ -137,7 +137,11 @@ isInsufficientMaterial board = case nonKingPieces of
 
 isThreefoldRepetition :: Game -> Bool
 isThreefoldRepetition game =
-  length (filter (== getCurrentBoard game) game) >= 3
+  length (filter (== getCurrentBoard game) (getEveryOther game)) >= 3
+  where
+    getEveryOther []       = []
+    getEveryOther [x]      = [x]
+    getEveryOther (x:_:xs) = x : getEveryOther xs
 
 isFiftyMoveDraw :: Game -> Bool
 isFiftyMoveDraw = isFiftyMoveDraw' 0
