@@ -56,7 +56,9 @@ getTotalValue board player =
 
 getDevelopmentValue :: Board -> Color -> Double
 getDevelopmentValue board player =
-  getPieceDevelopmentValue board player + getCastlingValue board player
+  getPieceDevelopmentValue board player
+  + getCastlingRightsValue board player
+  + getCastlingValue board player
 
 getPieceDevelopmentValue :: Board -> Color -> Double
 getPieceDevelopmentValue board player = pieceDevelopmentValue * fromIntegral (length
