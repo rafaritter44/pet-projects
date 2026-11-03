@@ -72,10 +72,13 @@ setSquare (Position row col) square (Board board) = Board $
   setElem square (row, col) board
 
 getKingPosition :: Board -> Color -> Position
-getKingPosition board player = head
+getKingPosition board player = head $ getPieceTypePositions board player King
+
+getPieceTypePositions :: Board -> Color -> PieceType -> [Position]
+getPieceTypePositions board player pieceType =
   [ position
   | position <- getPiecePositions board player
-  , getSquare board position == Occupied (Piece player King)
+  , getSquare board position == Occupied (Piece player pieceType)
   ]
 
 getPiecePositions :: Board -> Color -> [Position]
