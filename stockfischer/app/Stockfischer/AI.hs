@@ -21,9 +21,11 @@ castlingValue = 0.5
 chooseMove :: Game -> LegalMoves -> LegalMove
 chooseMove game legalMoves =
   fst $ maximumBy (comparing snd)
-    [ ((move, board), - negamax searchDepth (- infinity) infinity (board:game))
+    [ ((move, board), getScore board)
     | (move, board) <- M.toList legalMoves
     ]
+  where
+    getScore board = - negamax searchDepth (- infinity) infinity (board:game)
 
 negamax :: Int -> Double -> Double -> Game -> Double
 negamax depth alpha beta game = case getGameState game of
