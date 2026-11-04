@@ -1,4 +1,13 @@
-module Stockfischer.Players where
+module Stockfischer.Players
+  -- Types
+  ( Color(..)
+  , PlayerType(..)
+  , PlayerTypes
+  -- Functions
+  , getNextPlayer
+  , getBoardPerspective
+  , getPlayerType
+  ) where
 
 data Color = White | Black
   deriving (Eq, Show)
