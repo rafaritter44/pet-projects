@@ -1,4 +1,29 @@
-module Stockfischer.Board where
+module Stockfischer.Board
+  -- Types
+  ( Game
+  , Board
+  , Square(..)
+  , Piece(..)
+  , PieceType(..)
+  -- Functions
+  , playMove
+  , getCurrentBoard
+  , getPreviousBoard
+  , getCurrentPlayer
+  , getSquare
+  , getAllPiecePositions
+  , getPiecePositions
+  , getKingPosition
+  , getPieceTypePositions
+  , getPieceTypes
+  , getMoveOrPromotions
+  , isCaptureOrPawnMove
+  , isInitialPosition
+  , isPathClear
+  , hasEverMoved
+  -- Values
+  , initialBoard
+  ) where
 
 import qualified Stockfischer.Moves as M
 import Stockfischer.Moves hiding (Queen, Rook, Bishop, Knight)

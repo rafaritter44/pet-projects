@@ -1,4 +1,4 @@
-module Main where
+module Main (main) where
 
 import Stockfischer.Game
 import Stockfischer.Players

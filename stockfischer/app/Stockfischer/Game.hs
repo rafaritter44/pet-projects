@@ -1,4 +1,4 @@
-module Stockfischer.Game where
+module Stockfischer.Game (startGame) where
 
 import Stockfischer.AI
 import Stockfischer.Rules

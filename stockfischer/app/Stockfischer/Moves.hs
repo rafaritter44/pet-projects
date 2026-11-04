@@ -1,4 +1,34 @@
-module Stockfischer.Moves where
+module Stockfischer.Moves
+  -- Types
+  ( Position(..)
+  , Move(..)
+  , PromotionPiece(..)
+  , Castling(..)
+  -- Functions
+  , getRelativePositions
+  , getPositionsInDirections
+  , getPositionsBetween
+  , getPawnOffsets
+  , getPawnInitialOffsets
+  , getPawnInitialPosition
+  , getKingInitialPosition
+  , getRookInitialPosition
+  , getCastling
+  , getCastlingPositions
+  , getIntermediateCastlingMove
+  , getRookCastlingMove
+  , getEnPassantOpponentMove
+  , getEnPassantOpponentPosition
+  , getColumn
+  , isPromotionRow
+  , isSameColumn
+  , isSameSquareColor
+  -- Values
+  , orthogonalOffsets
+  , diagonalOffsets
+  , adjacentOffsets
+  , knightOffsets
+  ) where
 
 import Stockfischer.Players
 import Data.Char

@@ -1,4 +1,4 @@
-module Stockfischer.AI where
+module Stockfischer.AI (chooseMove) where
 
 import Stockfischer.Rules
 import Stockfischer.Board

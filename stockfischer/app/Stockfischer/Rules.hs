@@ -1,4 +1,12 @@
-module Stockfischer.Rules where
+module Stockfischer.Rules
+  -- Types
+  ( GameState(..)
+  , GameResult(..)
+  , LegalMoves
+  , LegalMove
+  -- Functions
+  , getGameState
+  ) where
 
 import Stockfischer.Board
 import Stockfischer.Moves hiding (Queen, Rook, Bishop, Knight)
