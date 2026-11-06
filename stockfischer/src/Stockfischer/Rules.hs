@@ -2,6 +2,7 @@ module Stockfischer.Rules
   -- Types
   ( GameState(..)
   , GameResult(..)
+  , DrawReason(..)
   , LegalMoves
   , LegalMove
   -- Functions
@@ -14,8 +15,11 @@ import Stockfischer.Players
 import qualified Data.Map as M
 
 data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | FiftyMoveRule
+  deriving (Eq)
 data GameResult = Checkmate | Draw DrawReason
+  deriving (Eq, Show)
 data GameState = GameOver GameResult | PlayerTurn LegalMoves
+  deriving (Eq, Show)
 
 type LegalMove = (Move, Board)
 type LegalMoves = M.Map Move Board
