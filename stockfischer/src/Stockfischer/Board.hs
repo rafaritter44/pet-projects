@@ -2,9 +2,9 @@ module Stockfischer.Board
   -- Types
   ( Game
   , Board
-  , Square(..)
-  , Piece(..)
-  , PieceType(..)
+  , Square(Occupied, Empty)
+  , Piece(Piece)
+  , PieceType(Pawn, Knight, Bishop, Rook, Queen, King)
   -- Functions
   , playMove
   , getCurrentBoard

@@ -1,7 +1,7 @@
 module Stockfischer.Players
   -- Types
-  ( Color(..)
-  , PlayerType(..)
+  ( Color(White, Black)
+  , PlayerType(Human, Computer)
   , PlayerTypes
   -- Functions
   , getNextPlayer

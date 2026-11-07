@@ -1,9 +1,9 @@
 module Stockfischer.Moves
   -- Types
-  ( Position(..)
-  , Move(..)
-  , PromotionPiece(..)
-  , Castling(..)
+  ( Position(Position)
+  , Move(Move, Promotion)
+  , PromotionPiece(Queen, Rook, Bishop, Knight)
+  , Castling(Castling)
   -- Functions
   , getRelativePositions
   , getPositionsInDirections

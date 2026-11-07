@@ -1,8 +1,8 @@
 module Stockfischer.Rules
   -- Types
-  ( GameState(..)
-  , GameResult(..)
-  , DrawReason(..)
+  ( GameState(PlayerTurn, GameOver)
+  , GameResult(Checkmate, Draw)
+  , DrawReason(Stalemate, InsufficientMaterial, ThreefoldRepetition, FiftyMoveRule)
   , LegalMoves
   , LegalMove
   -- Functions
