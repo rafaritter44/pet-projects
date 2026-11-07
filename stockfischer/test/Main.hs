@@ -13,6 +13,7 @@ import Stockfischer.Rules
   ( GameState(PlayerTurn, GameOver)
   , GameResult(Checkmate, Draw)
   , DrawReason(ThreefoldRepetition)
+  , LegalMoves
   , getGameState
   )
 import Stockfischer.Board (Game, initialBoard)
@@ -56,22 +57,30 @@ main = hspec $ do
       shouldAllowMove moves enPassant
 
 shouldEndIn :: [Move] -> GameResult -> Expectation
-shouldEndIn moves result =
-  case foldM playLegalMove [initialBoard] moves of
-    Left message -> expectationFailure message
-    Right game   -> getGameState game `shouldBe` GameOver result
+shouldEndIn moves result = shouldReachState moves (`shouldBe` GameOver result)
 
 shouldAllowMove :: [Move] -> Move -> Expectation
-shouldAllowMove moves move =
-  case foldM playLegalMove [initialBoard] moves of
-    Left message -> expectationFailure message
-    Right game   -> case getGameState game of
-      PlayerTurn legalMoves -> legalMoves `shouldSatisfy` M.member move
-      GameOver result       -> expectationFailure $ "Game ended unexpectedly: " ++ show result
+shouldAllowMove moves move = case playMoves moves >>= getLegalMoves of
+  Left message     -> expectationFailure message
+  Right legalMoves -> legalMoves `shouldSatisfy` M.member move
 
-playLegalMove :: Game -> Move -> Either String Game
-playLegalMove game move = case getGameState game of
-  PlayerTurn legalMoves -> case M.lookup move legalMoves of
+shouldReachState :: [Move] -> (GameState -> Expectation) -> Expectation
+shouldReachState moves assertion = case playMoves moves of
+  Left message -> expectationFailure message
+  Right game   -> assertion $ getGameState game
+
+playMoves :: [Move] -> Either String Game
+playMoves = foldM playMove [initialBoard]
+
+playMove :: Game -> Move -> Either String Game
+playMove game move = do
+  legalMoves <- getLegalMoves game
+  case M.lookup move legalMoves of
     Just board -> Right (board:game)
     Nothing    -> Left $ "Unexpected illegal move: " ++ show move
-  GameOver result -> Left $ "Game ended unexpectedly: " ++ show result
+
+getLegalMoves :: Game -> Either String LegalMoves
+getLegalMoves game =
+  case getGameState game of
+    PlayerTurn legalMoves -> Right legalMoves
+    GameOver result       -> Left $ "Game ended unexpectedly: " ++ show result
