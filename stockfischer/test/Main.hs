@@ -3,7 +3,8 @@ module Main (main) where
 import Test.Hspec (hspec, describe, it, shouldBe, expectationFailure, Expectation)
 import Stockfischer.Rules
   ( GameState(PlayerTurn, GameOver)
-  , GameResult(Checkmate)
+  , GameResult(Checkmate, Draw)
+  , DrawReason(ThreefoldRepetition)
   , getGameState
   )
 import Stockfischer.Board (Game, initialBoard)
@@ -14,9 +15,13 @@ import qualified Data.Map as M (lookup)
 main :: IO ()
 main = hspec $ do
   describe "Stockfischer.Rules.getGameState" $ do
-    it "delivers fool's mate" $ do
+    it "delivers mate" $ do
       let moves = map read ["f2f3", "e7e6", "g2g4", "d8h4"]
       shouldEndIn moves Checkmate
+
+    it "draws" $ do
+      let moves = map read $ concat $ replicate 2 ["g1f3", "g8f6", "f3g1", "f6g8"]
+      shouldEndIn moves $ Draw ThreefoldRepetition
 
 shouldEndIn :: [Move] -> GameResult -> Expectation
 shouldEndIn moves result =
