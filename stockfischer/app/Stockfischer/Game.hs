@@ -1,11 +1,22 @@
 module Stockfischer.Game (startGame) where
 
-import Stockfischer.AI
+import Stockfischer.AI (chooseMove)
 import Stockfischer.Rules
-import Stockfischer.Board
+  ( GameState(PlayerTurn, GameOver)
+  , GameResult(Checkmate, Draw)
+  , getGameState
+  )
+import Stockfischer.Board (Game, initialBoard, getCurrentBoard, getCurrentPlayer)
 import Stockfischer.Players
-import Text.Read
-import qualified Data.Map as M
+  ( PlayerTypes
+  , PlayerType(Human, Computer)
+  , Color(White, Black)
+  , getNextPlayer
+  , getBoardPerspective
+  , getPlayerType
+  )
+import Text.Read (readMaybe)
+import qualified Data.Map as M (lookup)
 
 startGame :: PlayerTypes -> IO ()
 startGame = (`playGame` [initialBoard])

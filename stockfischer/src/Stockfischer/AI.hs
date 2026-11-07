@@ -1,12 +1,30 @@
 module Stockfischer.AI (chooseMove) where
 
 import Stockfischer.Rules
+  ( GameState(PlayerTurn, GameOver)
+  , GameResult(Checkmate, Draw)
+  , LegalMoves
+  , LegalMove
+  , getGameState
+  )
 import Stockfischer.Board
-import Stockfischer.Moves hiding (Queen, Rook, Bishop, Knight)
-import Stockfischer.Players
-import Data.List
-import Data.Ord
-import qualified Data.Map as M
+  ( Game
+  , Board
+  , Square(Occupied)
+  , Piece(Piece)
+  , PieceType(Pawn, Knight, Bishop, Rook, Queen, King)
+  , getCurrentBoard
+  , getCurrentPlayer
+  , isInitialPosition
+  , getKingPosition
+  , getPieceTypePositions
+  , getPieceTypes
+  )
+import Stockfischer.Moves (getCastlingPositions, getKingInitialPosition)
+import Stockfischer.Players (Color, getNextPlayer)
+import Data.List (maximumBy)
+import Data.Ord (comparing)
+import qualified Data.Map as M (toList, elems)
 
 searchDepth :: Int
 searchDepth = 3

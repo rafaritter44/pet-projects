@@ -1,11 +1,15 @@
 module Main (main) where
 
-import Test.Hspec
+import Test.Hspec (hspec, describe, it, shouldBe, expectationFailure, Expectation)
 import Stockfischer.Rules
-import Stockfischer.Board
-import Stockfischer.Moves
+  ( GameState(PlayerTurn, GameOver)
+  , GameResult(Checkmate)
+  , getGameState
+  )
+import Stockfischer.Board (Game, initialBoard)
+import Stockfischer.Moves (Move)
 import Control.Monad (foldM)
-import qualified Data.Map as M
+import qualified Data.Map as M (lookup)
 
 main :: IO ()
 main = hspec $ do

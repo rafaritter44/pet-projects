@@ -5,6 +5,8 @@ module Stockfischer.Board
   , Square(Occupied, Empty)
   , Piece(Piece)
   , PieceType(Pawn, Knight, Bishop, Rook, Queen, King)
+  -- Values
+  , initialBoard
   -- Functions
   , playMove
   , getCurrentBoard
@@ -21,16 +23,24 @@ module Stockfischer.Board
   , isInitialPosition
   , isPathClear
   , hasEverMoved
-  -- Values
-  , initialBoard
   ) where
 
-import qualified Stockfischer.Moves as M
-import Stockfischer.Moves hiding (Queen, Rook, Bishop, Knight)
-import Stockfischer.Players
-import Data.Matrix
-import Data.List
-import Data.Function
+import qualified Stockfischer.Moves as M (PromotionPiece(Queen, Rook, Bishop, Knight))
+import Stockfischer.Moves
+  ( Position(Position)
+  , Move(Move, Promotion)
+  , PromotionPiece
+  , getPositionsBetween
+  , getCastling
+  , getRookCastlingMove
+  , getEnPassantOpponentMove
+  , isSameColumn
+  , isPromotionRow
+  )
+import Stockfischer.Players (Color(White, Black))
+import Data.Matrix (Matrix, fromList, getElem, setElem)
+import Data.List (intercalate)
+import Data.Function ((&))
 
 data PieceType = Pawn | Knight | Bishop | Rook | Queen | King
   deriving (Eq)
@@ -169,7 +179,7 @@ movePiece (Promotion from to piece) board = case getSquare board from of
     & setSquare to (Occupied $ Piece color $ getPromotionPiece piece)
   _ -> board
 
-getPromotionPiece :: M.PromotionPiece -> PieceType
+getPromotionPiece :: PromotionPiece -> PieceType
 getPromotionPiece M.Queen  = Queen
 getPromotionPiece M.Rook   = Rook
 getPromotionPiece M.Bishop = Bishop

@@ -4,6 +4,11 @@ module Stockfischer.Moves
   , Move(Move, Promotion)
   , PromotionPiece(Queen, Rook, Bishop, Knight)
   , Castling(Castling)
+  -- Values
+  , orthogonalOffsets
+  , diagonalOffsets
+  , adjacentOffsets
+  , knightOffsets
   -- Functions
   , getRelativePositions
   , getPositionsInDirections
@@ -23,17 +28,12 @@ module Stockfischer.Moves
   , isPromotionRow
   , isSameColumn
   , isSameSquareColor
-  -- Values
-  , orthogonalOffsets
-  , diagonalOffsets
-  , adjacentOffsets
-  , knightOffsets
   ) where
 
-import Stockfischer.Players
-import Data.Char
-import Data.Maybe
-import Data.List
+import Stockfischer.Players (Color(White, Black))
+import Data.Char (toLower)
+import Data.Maybe (mapMaybe)
+import Data.List (find)
 
 type Coordinate = Int
 

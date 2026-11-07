@@ -10,9 +10,50 @@ module Stockfischer.Rules
   ) where
 
 import Stockfischer.Board
-import Stockfischer.Moves hiding (Queen, Rook, Bishop, Knight)
-import Stockfischer.Players
-import qualified Data.Map as M
+  ( Game
+  , Board
+  , Square(Occupied, Empty)
+  , Piece(Piece)
+  , PieceType(Pawn, Knight, Bishop, Rook, Queen, King)
+  , playMove
+  , getCurrentBoard
+  , getPreviousBoard
+  , getCurrentPlayer
+  , getSquare
+  , getKingPosition
+  , getPiecePositions
+  , getAllPiecePositions
+  , getMoveOrPromotions
+  , isInitialPosition
+  , isPathClear
+  , isCaptureOrPawnMove
+  , hasEverMoved
+  )
+import Stockfischer.Moves
+  ( Position
+  , Move
+  , Castling(Castling)
+  , orthogonalOffsets
+  , diagonalOffsets
+  , adjacentOffsets
+  , knightOffsets
+  , getRelativePositions
+  , getPositionsInDirections
+  , getPawnOffsets
+  , getPawnInitialOffsets
+  , getPawnInitialPosition
+  , getKingInitialPosition
+  , getRookInitialPosition
+  , getCastling
+  , getCastlingPositions
+  , getIntermediateCastlingMove
+  , getEnPassantOpponentPosition
+  , getColumn
+  , isSameColumn
+  , isSameSquareColor
+  )
+import Stockfischer.Players (Color, getNextPlayer)
+import qualified Data.Map as M (Map, fromList, null)
 
 data DrawReason = Stalemate | InsufficientMaterial | ThreefoldRepetition | FiftyMoveRule
   deriving (Eq)
