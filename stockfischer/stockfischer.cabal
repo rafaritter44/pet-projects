@@ -40,6 +40,7 @@ test-suite stockfischer-test
   import:             deps
   type:               exitcode-stdio-1.0
   main-is:            Spec.hs
+  other-modules:      Stockfischer.RulesSpec
   build-depends:      stockfischer, hspec ^>=2.11.18
   build-tool-depends: hspec-discover:hspec-discover ^>=2.11.18
   hs-source-dirs:     test
