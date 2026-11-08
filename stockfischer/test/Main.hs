@@ -57,17 +57,14 @@ main = hspec $ do
       shouldAllowMove moves enPassant
 
 shouldEndIn :: [Move] -> GameResult -> Expectation
-shouldEndIn moves result = shouldReachState moves (`shouldBe` GameOver result)
+shouldEndIn moves result = case playMoves moves of
+  Left message -> expectationFailure message
+  Right game   -> getGameState game `shouldBe` GameOver result
 
 shouldAllowMove :: [Move] -> Move -> Expectation
 shouldAllowMove moves move = case playMoves moves >>= getLegalMoves of
   Left message     -> expectationFailure message
   Right legalMoves -> legalMoves `shouldSatisfy` M.member move
-
-shouldReachState :: [Move] -> (GameState -> Expectation) -> Expectation
-shouldReachState moves assertion = case playMoves moves of
-  Left message -> expectationFailure message
-  Right game   -> assertion $ getGameState game
 
 playMoves :: [Move] -> Either String Game
 playMoves = foldM playMove [initialBoard]
@@ -80,7 +77,6 @@ playMove game move = do
     Nothing    -> Left $ "Unexpected illegal move: " ++ show move
 
 getLegalMoves :: Game -> Either String LegalMoves
-getLegalMoves game =
-  case getGameState game of
-    PlayerTurn legalMoves -> Right legalMoves
-    GameOver result       -> Left $ "Game ended unexpectedly: " ++ show result
+getLegalMoves game = case getGameState game of
+  PlayerTurn legalMoves -> Right legalMoves
+  GameOver result       -> Left $ "Game ended unexpectedly: " ++ show result
