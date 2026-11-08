@@ -37,8 +37,9 @@ executable stockfischer
   hs-source-dirs: app
 
 test-suite stockfischer-test
-  import:         deps
-  type:           exitcode-stdio-1.0
-  main-is:        Main.hs
-  build-depends:  stockfischer, hspec ^>=2.11.18
-  hs-source-dirs: test
+  import:             deps
+  type:               exitcode-stdio-1.0
+  main-is:            Spec.hs
+  build-depends:      stockfischer, hspec ^>=2.11.18
+  build-tool-depends: hspec-discover:hspec-discover ^>=2.11.18
+  hs-source-dirs:     test

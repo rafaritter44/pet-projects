@@ -1,13 +1,13 @@
-module Main (main) where
+module Stockfischer.RulesSpec (spec) where
 
 import Test.Hspec
-  ( hspec
+  ( Spec
+  , Expectation
   , describe
   , it
   , shouldBe
   , shouldSatisfy
   , expectationFailure
-  , Expectation
   )
 import Stockfischer.Rules
   ( GameState(PlayerTurn, GameOver)
@@ -21,8 +21,8 @@ import Stockfischer.Moves (Move)
 import Control.Monad (foldM)
 import qualified Data.Map as M (lookup, member)
 
-main :: IO ()
-main = hspec $ do
+spec :: Spec
+spec = do
   describe "Stockfischer.Rules.getGameState" $ do
     it "delivers mate" $ do
       let moves = map read ["f2f3", "e7e6", "g2g4", "d8h4"]
