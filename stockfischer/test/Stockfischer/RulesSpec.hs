@@ -9,17 +9,15 @@ import Test.Hspec
   , shouldSatisfy
   , expectationFailure
   )
+import Stockfischer.SpecUtils (playMoves, getLegalMoves)
 import Stockfischer.Rules
-  ( GameState(PlayerTurn, GameOver)
+  ( GameState(GameOver)
   , GameResult(Checkmate, Draw)
   , DrawReason(ThreefoldRepetition)
-  , LegalMoves
   , getGameState
   )
-import Stockfischer.Board (Game, initialBoard)
 import Stockfischer.Moves (Move)
-import Control.Monad (foldM)
-import qualified Data.Map as M (lookup, member)
+import qualified Data.Map as M (member)
 
 spec :: Spec
 spec = do
@@ -65,18 +63,3 @@ shouldAllowMove :: [Move] -> Move -> Expectation
 shouldAllowMove moves move = case playMoves moves >>= getLegalMoves of
   Left message     -> expectationFailure message
   Right legalMoves -> legalMoves `shouldSatisfy` M.member move
-
-playMoves :: [Move] -> Either String Game
-playMoves = foldM playMove [initialBoard]
-
-playMove :: Game -> Move -> Either String Game
-playMove game move = do
-  legalMoves <- getLegalMoves game
-  case M.lookup move legalMoves of
-    Just board -> Right (board:game)
-    Nothing    -> Left $ "Unexpected illegal move: " ++ show move
-
-getLegalMoves :: Game -> Either String LegalMoves
-getLegalMoves game = case getGameState game of
-  PlayerTurn legalMoves -> Right legalMoves
-  GameOver result       -> Left $ "Game ended unexpectedly: " ++ show result

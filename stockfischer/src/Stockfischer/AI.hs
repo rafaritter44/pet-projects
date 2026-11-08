@@ -27,7 +27,7 @@ import Data.Ord (comparing)
 import qualified Data.Map as M (toList, elems)
 
 searchDepth :: Int
-searchDepth = 3
+searchDepth = 2
 
 infinity :: Double
 infinity = 1 / 0
