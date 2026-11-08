@@ -23,4 +23,4 @@ spec = do
 shouldChooseMove :: [Move] -> Move -> Expectation
 shouldChooseMove moves move = case playMoves moves of
   Left message -> expectationFailure message
-  Right game   -> fst <$> chooseMove game <$> getLegalMoves game `shouldBe` Right move
+  Right game   -> fst . chooseMove game <$> getLegalMoves game `shouldBe` Right move
