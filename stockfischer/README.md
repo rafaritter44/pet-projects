@@ -10,13 +10,13 @@ minimax algorithm with alpha-beta pruning.
 
 ### Getting Started
 
-Run the CLI:
+Running the CLI:
 
 ```shell
 cabal run
 ```
 
-Run the test suite:
+Running the test suite:
 
 ```shell
 cabal test
