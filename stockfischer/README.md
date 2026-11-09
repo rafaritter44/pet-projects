@@ -8,6 +8,20 @@ A chess command-line interface that allows you to play against another human, ag
 computer, or even have the computer play against itself. The computer engine implements the
 minimax algorithm with alpha-beta pruning.
 
+### Getting Started
+
+Run the CLI:
+
+```shell
+cabal run
+```
+
+Run the test suite:
+
+```shell
+cabal test
+```
+
 ### Main Menu
 
 ![Main Menu](screenshots/main-menu.png)
